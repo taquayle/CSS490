@@ -19,6 +19,7 @@ gEngine.GameLoop = (function () {
     var mLagTime;
     var mCurrentTime;
     var mElapsedTime;
+    var mUpdatesPerCall;
 
     // The current loop state (running or should stop)
     var mIsLoopRunning = false;
@@ -36,7 +37,8 @@ gEngine.GameLoop = (function () {
             mElapsedTime = mCurrentTime - mPreviousTime;
             mPreviousTime = mCurrentTime;
             mLagTime += mElapsedTime;
-
+            
+            mUpdatesPerCall = 0;
             // Step C: Make sure we update the game the appropriate number of times.
             //      Update only every Milliseconds per frame.
             //      If lag larger then update frames, update until caught up.
@@ -44,8 +46,9 @@ gEngine.GameLoop = (function () {
                 gEngine.Input.update();
                 this.update();      // call MyGame.update()
                 mLagTime -= kMPF;
+                mUpdatesPerCall++;
             }
-
+            gUpdateFrame(mElapsedTime, mUpdatesPerCall, mLagTime);
             // Step D: now let's draw
             this.draw();    // Call MyGame.draw()
         }
