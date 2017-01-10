@@ -25,7 +25,9 @@ function MyGame(htmlCanvasID) {
     this.squares = [];  // Array to hold all the square objects
     this.delSquares = [];
     this.timeStamp = [];
-    this.delTimeStamp = [];
+    this.sqNums = [];
+    this.dTime;
+
     this.borders = [-30, 70, 97, 22.5]; // L-R-T-B Borders.
     this.delMode = false;
     
@@ -73,28 +75,24 @@ MyGame.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     
     var i;
-
+    gUpdateObject((this.delSquares.length + this.squares.length), this.delMode);
     
-    if(this.delMode)
+//    if(this.delMode)
+//    {
+//        for(i in this.delSquares)
+//        {
+//            this.delSquares[i].draw(this.mCamera.getVPMatrix());
+//        }
+//    }
+    for(i in this.delSquares)
     {
-        gUpdateObject(this.delSquares.length, this.delMode);
-        for(i in this.delSquares)
-        {
-            this.delSquares[i].draw(this.mCamera.getVPMatrix());
-        }
-        for(i in this.squares)
-        {
-            this.squares[i].draw(this.mCamera.getVPMatrix());
-        }
+        this.delSquares[i].draw(this.mCamera.getVPMatrix());
     }
-    else
+    for(i in this.squares)
     {
-        gUpdateObject((this.delSquares.length + this.squares.length), this.delMode);
-        for(i in this.squares)
-        {
-            this.squares[i].draw(this.mCamera.getVPMatrix());
-        }
+        this.squares[i].draw(this.mCamera.getVPMatrix());
     }
+
     // Step  D: Activate the red shader to draw
     this.mRedSq.draw(this.mCamera.getVPMatrix());
 };
@@ -105,7 +103,10 @@ MyGame.prototype.update = function () {
     // For this very simple game, let's move the red
     var redXform = this.mRedSq.getXform();
     var deltaX = 0.5;
-    
+    if(this.delMode)
+    {
+        this.deleteArray();
+    }
     // Step A: test for white square movement
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)) {
         if (redXform.getXPos() > this.borders[1]) // right-bound of the window
@@ -164,29 +165,30 @@ MyGame.prototype.update = function () {
             
             // Push newest temp onto stack
             this.squares.push(temp);
-            this.timeStamp.push(Date.now());
+            
             i++;
         }
+        this.timeStamp.push(Date.now());
+        this.sqNums.push(sqNum);
     }
      if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)) 
      {
-         this.delMode = true;
-         this.delSquares.push.apply(this.delSquares, this.squares);
-         this.squares = [];
-         var tNext;
-         var tCurr;
-         for (i=this.delSquares.length-1; i>=0; i--)
-         {
-             tNext = this.delSquares[i-1].getTime();
-             tCurr = this.delSquares[i].getTime();
-             window.setTimeout(deleteSq(i), tCurr-tNext);
-         }
-         this.delMode = false;
+        this.delMode = true;
+        this.dTime = Date.now();
+        this.delSquares.push.apply(this.delSquares, this.squares);
+        this.squares = [];
      }
 };
 
-MyGame.prototype.deleteSq = function (i)
+MyGame.prototype.deleteArray = function ()
 {
-    this.delSquares.splice(i, 1); // remove from position i, one element
-
+    var end = (this.delSquares.length-1) - this.sqNums[this.sqNums.length-1];
+ 
+    this.delSquares.splice(end, this.sqNums[this.sqNums.length-1]);
+    //this.sqNums.splice(this.sqNums.length-1, 1);
+    
+    if(this.delSquares.length <= 0)
+    {
+        this.delMode=false;
+    }
 };
