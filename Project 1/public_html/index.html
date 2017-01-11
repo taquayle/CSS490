@@ -26,18 +26,27 @@
     </head>
 
     <body onload="new MyGame('GLCanvas');">
+        
+
+        <div style="float:left; width:50%;">
         <canvas id="GLCanvas" width="640" height="480">
-            <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
-            Your browser does not support the HTML5 canvas.
-            <!-- this message will show only if WebGL clearing failed -->
-        </canvas>
-         <br>
+                    <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
+                    Your browser does not support the HTML5 canvas.
+                    <!-- this message will show only if WebGL clearing failed -->
+                </canvas>
 
-        <div id='UpdateFrame'></div>
+                 <br>
 
-        <hr>
+                <div id='UpdateFrame'></div>
 
-        <div id='UpdateObject'></div>
+                <hr>
+
+                <div id='UpdateObject'></div>
+        </div>
+        <div style="float:left; width:50%;">
+        <div id="Stats" style="overflow-y:scroll; height:640px;"></div>
+        </div>
+
         <script>
 
             var gUpdateFrame = function(elapsed, numUpdatePerDraw, lagTime) {
