@@ -208,13 +208,13 @@ MyGame.prototype.W = function(redXform)
         // Create new renderable
         var temp = new Renderable(this.mConstColorShader);
       
-        if(this.rW)
+        if(this.rW) // Random squares for W
         {
             var rSize = (5 * Math.random()) + 1;
             temp.getXform().setSize(rSize, rSize);
             temp.setColor([Math.random(), Math.random(), Math.random(), 1]);
         }
-        else
+        else // Huskey Purple for squares
         {
             temp.getXform().setSize(3, 3);
             temp.setColor([.2, 0, .43, 1]);
