@@ -4,10 +4,12 @@
  */
 /*jslint node: true, vars: true */
 /*global gEngine: false, SimpleShader: false, Renderable: false, Camera: false, mat4: false, vec3: false, vec2: false */
-/* find out more about jslint: http://www.jslint.com/help.html */
+
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
-
+/******************************************************************************/
+//  Modified by: Tyler Quayle
+/******************************************************************************/
 
 function MyGame(htmlCanvasID) {
     // variables of the constant color shader
@@ -22,22 +24,23 @@ function MyGame(htmlCanvasID) {
     gEngine.Core.initializeEngineCore(htmlCanvasID);
 
 
-    this.creSquares = [];  // Array to hold all the square objects
-    this.delSquares = [];
+    this.creSquares = [];   // Array to hold all the square objects
+    this.delSquares = [];   // Array to hold the deletion queue
     
-    this.creTimeStamp = [];
-    this.delTimeStamp = [];
+    this.creTimeStamp = []; // Array to hold the timestamp of each group
+    this.delTimeStamp = []; // Array to hold the deletion time intervals
     
-    this.creSqNums = [];
-    this.delSqNums = [];
+    this.creSqNums = [];    // Array to hold how many squares per group
+    this.delSqNums = [];    // Array to hold how many squares to delete
     
-    this.delTime;
-    this.creTime;
+    this.delTime;           // Current timestamp when deletion started
+    this.creTime;           // Current timestamp since first creation.
     
     this.borders = [-30, 70, 97, 22.5]; // L-R-T-B Borders.
     
     this.delMode = false;
     this.firstCreate = true;
+    this.rW = false;
     
     // Initialize the game
     this.initialize();
@@ -83,7 +86,8 @@ MyGame.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     
     var i;
-    gUpdateObject((this.delSquares.length + this.creSquares.length), this.delMode);
+    gUpdateObject((this.delSquares.length + this.creSquares.length), 
+                    this.delMode, this.rW);
     
     for(i in this.delSquares)
     {
@@ -152,7 +156,7 @@ MyGame.prototype.update = function () {
             i++;
         }
         
-        if(this.firstCreate)
+        if(this.firstCreate) //If this is the first item to be created
         {
             this.creTimeStamp.push(0);
             this.creTime = Date.now();
@@ -160,26 +164,90 @@ MyGame.prototype.update = function () {
         }
         else
         {
-            this.creTimeStamp.splice(this.creTimeStamp.length-1, 0, (Date.now() - this.creTime));
+            this.creTimeStamp.splice(this.creTimeStamp.length-1, 0, 
+                                    (Date.now() - this.creTime));
             this.creTime = Date.now();
         }
         this.creSqNums.push(sqNum); 
     }
-     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)) 
-     {
-        if(this.creSquares.length >= 1)
-        {
-            this.delMode = true;
-           
-            this.copyArrays();
-            
-            this.firstCreate = true; // reset first create
-            this.singleDelete();
-        }
-     }
+    
+    /*  CHECK FOR 'D' KEY FOR DELETE  */
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)) 
+    {
+       if(this.creSquares.length >= 1)
+       {
+           this.delMode = true;
+
+           this.copyArrays();
+
+           this.firstCreate = true; // reset first create
+           this.singleDelete();
+       }
+    }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) 
+    {
+        this.W(redXform);
+    }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) 
+    {
+        this.rW = !this.rW;
+    }
 };
 
+MyGame.prototype.W = function(redXform)
+{
+    var scale_U = 1;
+    var scale_W = 3;
+    var U = [0,1,2,3,4,5, -1,-2,-3,-4, 6,7,8,9,10,  -5,-6,-7,-8,-9,-10];
+    var W = [5,4,3,2,1,0,  4, 3, 2, 1, 1,2,3,4, 5,   0, 1, 2, 3, 4, 5];
+
+    for(var i in W)
+    {
+        U[i] *= scale_U;
+        W[i] *= scale_W;
+        // Create new renderable
+        var temp = new Renderable(this.mConstColorShader);
+      
+        if(this.rW)
+        {
+            var rSize = (5 * Math.random()) + 1;
+            temp.getXform().setSize(rSize, rSize);
+            temp.setColor([Math.random(), Math.random(), Math.random(), 1]);
+        }
+        else
+        {
+            temp.getXform().setSize(3, 3);
+            temp.setColor([.2, 0, .43, 1]);
+        }
+        
+        // Set position for temp renderable
+        temp.getXform().setPosition((redXform.getXPos() + U[i]), (redXform.getYPos()+W[i]));
+
+        // Rotate temps by 0 - 360 degs (1 - 2 rads)
+        temp.getXform().setRotationInRad(Math.random() * 2);
+
+        // Push newest temp onto stack
+        this.creSquares.push(temp);
+    }
+    
+    if(this.firstCreate) //If this is the first item to be created
+    {
+        this.creTimeStamp.push(0);
+        this.creTime = Date.now();
+        this.firstCreate = false;
+    }
+    else
+    {
+        this.creTimeStamp.splice(this.creTimeStamp.length-1, 0, 
+                                (Date.now() - this.creTime));
+        this.creTime = Date.now();
+    }
+    this.creSqNums.push(W.length); 
+};
 /******************************************************************************/
+// copyArrays
+//  copy all of the creation arrays (denoted by cre) into the deletion arrays
+//  (denoted by del).
 /******************************************************************************/
 MyGame.prototype.copyArrays = function()
 {
@@ -195,6 +263,7 @@ MyGame.prototype.copyArrays = function()
     this.delSqNums.push.apply(this.delSqNums, this.creSqNums);
     this.creSqNums = []; // CLEAR SQUARE NUMBERS
 };
+
 /******************************************************************************/
 // createSquare(redXform)
 //  given redXform, create new square with random tilt/color/size at an distance
@@ -202,6 +271,7 @@ MyGame.prototype.copyArrays = function()
 /******************************************************************************/
 MyGame.prototype.createSquare = function(redXform)
 {
+    
     // Create new renderable
     var temp = new Renderable(this.mConstColorShader);
     // Set new random color

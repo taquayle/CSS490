@@ -29,22 +29,48 @@
         
 
         <div style="float:left; width:50%;">
-        <canvas id="GLCanvas" width="640" height="480">
-                    <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
-                    Your browser does not support the HTML5 canvas.
-                    <!-- this message will show only if WebGL clearing failed -->
-                </canvas>
+            <canvas id="GLCanvas" width="640" height="480">
+                        <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
+                        Your browser does not support the HTML5 canvas.
+                        <!-- this message will show only if WebGL clearing failed -->
+            </canvas>
 
-                 <br>
+            <br>
 
-                <div id='UpdateFrame'></div>
+            <div id='UpdateFrame'></div>
 
-                <hr>
+            <hr>
 
-                <div id='UpdateObject'></div>
+            <div id='UpdateObject'></div>
+            
+            <hr>
+            <div>
+                <table border='1'>
+                    <tr>
+                        <td>Arrow Keys</td>
+                        <td>Move</td>
+                    </tr>   
+                    <tr>
+                        <td>Space Bar</td>
+                        <td>Create Squares</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td>Delete Squares</td>
+                    </tr> 
+                    <tr>
+                        <td>W</td>
+                        <td>Create W</td>
+                    </tr>
+                    <tr>
+                        <td>S</td>
+                        <td>Change W Mode</td>
+                    </tr> 
+                </table>
+            </div>
         </div>
         <div style="float:left; width:50%;">
-        <div id="Stats" style="overflow-y:scroll; height:640px;"></div>
+            <div id="Stats" style="overflow-y:scroll; height:640px;"></div>
         </div>
 
         <script>
@@ -67,7 +93,7 @@
 
            
 
-            var gUpdateObject = function(n, deleteMode) {
+            var gUpdateObject = function(n, deleteMode, random) {
 
                 var elm = document.getElementById("UpdateObject");
 
@@ -75,7 +101,9 @@
 
                         "<b>Total num objects: </b>" + n + "<br>" +
 
-                        "<b>Delete mode=" + deleteMode;
+                        "<b>Delete mode=" + deleteMode + "<br>" +
+                        
+                        "<b>W random=" + random;
 
                
 
