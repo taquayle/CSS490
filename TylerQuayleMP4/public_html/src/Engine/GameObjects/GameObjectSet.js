@@ -37,3 +37,27 @@ GameObjectSet.prototype.draw = function (aCamera) {
         this.mSet[i].draw(aCamera);
     }
 };
+GameObjectSet.prototype.removeFromSet = function (obj) {
+    var index = this.mSet.indexOf(obj);
+    if (index > -1)
+        this.mSet.splice(index, 1);
+};
+GameObjectSet.prototype.checkPacks = function(aCamera)
+{
+    var camRSide = aCamera.getWCCenter()[0] + (aCamera.getWCWidth()/2);
+    //var debug = " " + camRSide + " <br> "; 
+    var i, obj, x;
+    for (i = 0; i < this.mSet.length; i++) {
+        obj = this.mSet[i];
+        x = obj.getPosition()[0];
+        //debug += i +  x + "<br>";
+        if (obj.hasExpired() || x > camRSide) {
+            this.removeFromSet(obj);
+        }
+//        if(x > camRSide)
+//        {
+//            this.removeFromSet(obj);
+//        }
+    }
+    //document.getElementById("debug").innerHTML = debug;
+};

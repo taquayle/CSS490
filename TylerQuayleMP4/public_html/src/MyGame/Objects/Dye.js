@@ -9,7 +9,14 @@
 
 function Dye(spriteTexture) {
     this.kDelta = 0.3;
+    this.mXMag = this.kDelta;
+    this.mYMag = this.kDelta;
 
+    this.mCycles = 10;
+    this.mOmega = 10;
+    
+    this.mNumCyclesLeft = this.mCycles;
+    
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
     this.mDye.getXform().setPosition(35, 50);
@@ -59,9 +66,6 @@ Dye.prototype.update = function (mCamera)
         xform.setYPos(mCamera.mouseWCY());
     }
 
-    if (gEngine.Input.isButtonPressed(gEngine.Input.mouseButton.Left)) {
-
-    }
     if(mCamera.isMouseInViewport())
         this.moveToMouse(xform, mCamera);
 };
@@ -85,6 +89,11 @@ Dye.prototype.moveToMouse = function(xform, mCamera)
         else
             this.moveY(xform, 1);
     }
+};
+
+Dye.prototype.nextDampedHarmonic = function()
+{
+  var frac = this.mNumCyclesLeft / this  
 };
 
 /******************************************************************************/

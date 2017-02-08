@@ -5,25 +5,27 @@
 
 /*jslint node: true, vars: true */
 /*global gEngine, Scene, GameObjectset, TextureObject, Camera, vec2,
-  FontRenderable, SpriteRenderable, Dye, Editor,
+  FontRenderable, SpriteRenderable, DyePack, Dye, Editor,
   GameObject */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+    this.canW = .9;
+    this.canH = .9;
     // The camera to view the scene
     this.mCamera = null;
-
+    this.mTopCams = null;
+    
     this.mMsg = null;
     
     this.kMinionSprite = "assets/minion_sprite.png";
 
-    this.mLineSet = [];
-    this.mCurrentLine = null;
-    this.mP1 = null;
-    
+    this.temp = 0;
+    this.mPackDelta = 1.5;
     this.mChar = null;
+    this.mDyePack = new GameObjectSet();
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -40,21 +42,35 @@ MyGame.prototype.unloadScene = function () {
     
     var nextLevel = new Editor();  // next level to be loaded
     gEngine.Core.startScene(nextLevel);
-    //gEngine.Textures.unloadTexture(this.kMinionPortal);
-    //gEngine.Textures.unloadTexture(this.kBg);
 };
 MyGame.prototype.initialize = function () {
     // Step A: set up the cameras
-    this.setCanvasSize(.9,.96);
+    this.setCanvasSize(this.canW,this.canH);
     var canvas = document.getElementById("GLCanvas");
     this.mChar = new Dye(this.kMinionSprite);
+    
+    var mCamHeight = canvas.height * .8;
     this.mCamera = new Camera(
-        vec2.fromValues(30, 27.5), // position of the camera
-        400,                       // width of camera
-        [0, 0, canvas.width, canvas.height]           // viewport (orgX, orgY, width, height)
+        vec2.fromValues(35, 50), // position of the camera
+        200,                       // width of camera
+        [0, 0, canvas.width, mCamHeight]           // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
+    this.mTopCams = [];
+    var mTopCamWidth = canvas.width / 4;
+    for(var i = 0; i < 4; i++)
+    {
+        var tempCamera = new Camera(
+        vec2.fromValues(35, 50), // position of the camera
+        50,                       // width of camera
+        [   (mTopCamWidth*i)+4,                 // orgX
+            mCamHeight+4,                       // orgY
+            mTopCamWidth-4,                     // width
+            (canvas.height - mCamHeight)-4]);   // height
+        tempCamera.setBackgroundColor([.8, .8, .8, 1]);
+        this.mTopCams.push(tempCamera);
+    }
     
     var mCCenter = this.mCamera.getWCCenter();
     var mCWidth = this.mCamera.getWCWidth();
@@ -75,28 +91,46 @@ MyGame.prototype.draw = function () {
     
     this.mCamera.setupViewProjection();
     this.mChar.draw(this.mCamera);
-    var i, l;
-    for (i = 0; i < this.mLineSet.length; i++) {
-        l = this.mLineSet[i];
-        l.draw(this.mCamera);
-    }
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    this.mDyePack.draw(this.mCamera);
+    for(var i = 0; i < this.mTopCams.length; i++)
+    {
+        this.mTopCams[i].setupViewProjection();
+        this.mChar.draw(this.mTopCams[i]);
+        this.mDyePack.draw(this.mTopCams[i]);
+    }
+        
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
-    var msg = "Lines: " + this.mLineSet.length + " ";
-    var echo = "";
-    var x, y;
-    var canvas = document.getElementById("GLCanvas");
-    var can = " Canvas size: [" + canvas.width + " " + canvas.height + "]";
+            // create dye pack and remove the expired ones ...
+    var heroPos = this.mChar.getXform().getPosition();
+    if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
+        if (this.mCamera.isMouseInViewport()) {
+            this.mDyePack.addToSet(new DyePack(this.kMinionSprite, 
+                                                    heroPos[0], 
+                                                    heroPos[1],
+                                                    this.mPackDelta));
+        }
+    }
+    this.mTopCams[3].setWCCenter(heroPos[0], heroPos[1]);
+    this.mDyePack.update();
+    this.mDyePack.checkPacks(this.mCamera);
     this.mChar.update(this.mCamera);
+    this.setMessage();
+};
 
-    x = this.mCamera.mouseWCX();
-    y = this.mCamera.mouseWCY();
-    echo += "[" + x.toPrecision(4) + " " + y.toPrecision(4) + "]";
-    msg += echo + can;
+MyGame.prototype.setMessage = function ()
+{
+    var x = this.mCamera.mouseWCX();
+    var y = this.mCamera.mouseWCY();
+    var canvas = document.getElementById("GLCanvas");
+    var msg = "MousePos: ";
+    msg += "[" + x.toPrecision(4) + " " + y.toPrecision(4) + "]";
+    msg += " Canvas size: [" + canvas.width + " " + canvas.height + "]";
+    msg += " Dye Packs: " + this.mDyePack.size();
     this.mMsg.setText(msg);
 };
 
