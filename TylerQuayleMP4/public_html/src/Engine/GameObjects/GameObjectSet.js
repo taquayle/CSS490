@@ -54,10 +54,14 @@ GameObjectSet.prototype.checkPacks = function(aCamera)
         if (obj.hasExpired() || x > camRSide) {
             this.removeFromSet(obj);
         }
-//        if(x > camRSide)
-//        {
-//            this.removeFromSet(obj);
-//        }
     }
     //document.getElementById("debug").innerHTML = debug;
+};
+
+GameObjectSet.prototype.setInfo = function(info)
+{
+    var i;
+    for (i = 0; i < this.mSet.length; i++) {
+        this.mSet[i].setInfo(info);
+    }
 };

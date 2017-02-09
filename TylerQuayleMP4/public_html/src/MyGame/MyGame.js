@@ -23,8 +23,11 @@ function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
 
     this.temp = 0;
-    this.mPackDelta = 1.5;
+    this.kPackDelta = 1.5;
     this.mChar = null;
+    this.PAUSE = false;
+    this.mShowInfo = false;
+    this.mPause = null;
     this.mDyePack = new GameObjectSet();
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -81,6 +84,13 @@ MyGame.prototype.initialize = function () {
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(msgX, msgY);
     this.mMsg.setTextHeight(3);
+    
+    this.mPause = new FontRenderable("PAUSED");
+    this.mPause.setColor([0, 0, 0, 1]);
+    this.mPause.getXform().setPosition(mCCenter[0], mCCenter[1]);
+    this.mPause.setTextHeight(3);
+    
+    this.kPackDelta = 2;
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -93,6 +103,9 @@ MyGame.prototype.draw = function () {
     this.mChar.draw(this.mCamera);
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     this.mDyePack.draw(this.mCamera);
+    if(this.PAUSE)
+        this.mPause.draw(this.mCamera);
+    
     for(var i = 0; i < this.mTopCams.length; i++)
     {
         this.mTopCams[i].setupViewProjection();
@@ -106,20 +119,45 @@ MyGame.prototype.draw = function () {
 // anything from this function!
 MyGame.prototype.update = function () {
             // create dye pack and remove the expired ones ...
-    var heroPos = this.mChar.getXform().getPosition();
-    if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
-        if (this.mCamera.isMouseInViewport()) {
-            this.mDyePack.addToSet(new DyePack(this.kMinionSprite, 
-                                                    heroPos[0], 
-                                                    heroPos[1],
-                                                    this.mPackDelta));
+    if(!this.PAUSE)
+    {
+        var heroPos = this.mChar.getXform().getPosition();
+        this.mCamera.setWCCenter(Math.random(), Math.random());
+        if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
+            if (this.mCamera.isMouseInViewport()) {
+                this.mDyePack.addToSet(new DyePack(this.kMinionSprite, 
+                                                        heroPos[0], 
+                                                        heroPos[1],
+                                                        this.kPackDelta));
+            }
         }
+        
+        this.mDyePack.update();
+        this.mDyePack.checkPacks(this.mCamera);
+        this.mChar.update(this.mCamera);
     }
-    this.mTopCams[3].setWCCenter(heroPos[0], heroPos[1]);
-    this.mDyePack.update();
-    this.mDyePack.checkPacks(this.mCamera);
-    this.mChar.update(this.mCamera);
+    else
+    {
+        this.setInfo();
+    }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P))
+    {
+        this.PAUSE = !this.PAUSE;
+        this.mShowInfo = false;
+        this.setInfo();
+    }
+        
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) 
+        this.mShowInfo = !this.mShowInfo;
     this.setMessage();
+    
+};
+
+MyGame.prototype.setInfo = function()
+{
+    this.mChar.setInfo(this.mShowInfo);
+    this.mDyePack.setInfo(this.mChar.showInfo());
 };
 
 MyGame.prototype.setMessage = function ()
@@ -129,8 +167,9 @@ MyGame.prototype.setMessage = function ()
     var canvas = document.getElementById("GLCanvas");
     var msg = "MousePos: ";
     msg += "[" + x.toPrecision(4) + " " + y.toPrecision(4) + "]";
-    msg += " Canvas size: [" + canvas.width + " " + canvas.height + "]";
+    msg += "Canvas size: [" + canvas.width + " " + canvas.height + "]";
     msg += " Dye Packs: " + this.mDyePack.size();
+    msg += "";
     this.mMsg.setText(msg);
 };
 
