@@ -23,8 +23,6 @@ gEngine.Core.inheritPrototype(DyePack, GameObject);
 
 
 DyePack.prototype.update = function () {
-    GameObject.prototype.update.call(this);
-    // remember to update this.mMinion's animation
     this.mDyePack.getXform().incXPosBy(this.kDelta);
     this.mCycleLeft--;
 };
@@ -36,3 +34,7 @@ DyePack.prototype.getPosition = function()
 
 
 DyePack.prototype.hasExpired = function() { return this.mCycleLeft <= 0; };
+
+DyePack.prototype.getSpeed = function() { return this.kDelta;};
+
+DyePack.prototype.slowDown = function() { this.kDelta -= .1; };

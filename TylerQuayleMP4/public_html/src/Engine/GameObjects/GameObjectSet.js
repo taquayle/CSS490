@@ -42,6 +42,7 @@ GameObjectSet.prototype.removeFromSet = function (obj) {
     if (index > -1)
         this.mSet.splice(index, 1);
 };
+
 GameObjectSet.prototype.checkPacks = function(aCamera)
 {
     var camRSide = aCamera.getWCCenter()[0] + (aCamera.getWCWidth()/2);
@@ -51,13 +52,20 @@ GameObjectSet.prototype.checkPacks = function(aCamera)
         obj = this.mSet[i];
         x = obj.getPosition()[0];
         //debug += i +  x + "<br>";
-        if (obj.hasExpired() || x > camRSide) {
+        if (obj.hasExpired() || x > camRSide || obj.getSpeed() <= 0 ) {
             this.removeFromSet(obj);
         }
-//        if(x > camRSide)
-//        {
-//            this.removeFromSet(obj);
-//        }
+    }
+    //document.getElementById("debug").innerHTML = debug;
+};
+
+GameObjectSet.prototype.slowDown = function()
+{
+    //var debug = " " + camRSide + " <br> "; 
+    var i, obj;
+    for (i = 0; i < this.mSet.length; i++) {
+        obj = this.mSet[i];
+        obj.slowDown();
     }
     //document.getElementById("debug").innerHTML = debug;
 };

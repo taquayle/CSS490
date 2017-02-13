@@ -5,8 +5,7 @@
 
 /*jslint node: true, vars: true */
 /*global gEngine, Scene, GameObjectset, TextureObject, Camera, vec2,
-  FontRenderable, SpriteRenderable, DyePack, Dye, Editor,
-  GameObject */
+  FontRenderable, SpriteRenderable, DyePack, Dye, GameObject */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -17,7 +16,7 @@ function MyGame() {
     // The camera to view the scene
     this.mCamera = null;
     this.mTopCams = null;
-    
+    this.kTopVals = 0;
     this.mMsg = null;
     
     this.kMinionSprite = "assets/minion_sprite.png";
@@ -81,6 +80,8 @@ MyGame.prototype.initialize = function () {
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(msgX, msgY);
     this.mMsg.setTextHeight(3);
+    
+    this.mPackDelta = 1.5;
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -93,7 +94,7 @@ MyGame.prototype.draw = function () {
     this.mChar.draw(this.mCamera);
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     this.mDyePack.draw(this.mCamera);
-    for(var i = 0; i < this.mTopCams.length; i++)
+    for(var i = 0; i <= this.kTopVals; i++)
     {
         this.mTopCams[i].setupViewProjection();
         this.mChar.draw(this.mTopCams[i]);
@@ -107,19 +108,48 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
             // create dye pack and remove the expired ones ...
     var heroPos = this.mChar.getXform().getPosition();
-    if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
-        if (this.mCamera.isMouseInViewport()) {
-            this.mDyePack.addToSet(new DyePack(this.kMinionSprite, 
-                                                    heroPos[0], 
-                                                    heroPos[1],
-                                                    this.mPackDelta));
-        }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))  
+    {
+        this.mDyePack.addToSet(new DyePack(this.kMinionSprite, 
+                                                heroPos[0], 
+                                                heroPos[1],
+                                                this.mPackDelta));
     }
-    this.mTopCams[3].setWCCenter(heroPos[0], heroPos[1]);
+    //this.mTopCams[3].setWCCenter(this.mDyePack[0].getXForm().getXPos(), heroPos[1]);
     this.mDyePack.update();
     this.mDyePack.checkPacks(this.mCamera);
     this.mChar.update(this.mCamera);
     this.setMessage();
+    this.mTopCams[0].panTo(this.mChar.getXform().getXPos(), this.mChar.getXform().getYPos());
+    if(this.mDyePack.size() > 0)
+    {
+        var obj = this.mDyePack.getObjectAt(0);
+        var x = obj.getXform().getXPos();
+        var y = obj.getXform().getYPos();
+        this.mTopCams[0].panTo(x, y);
+    }
+    
+        
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) 
+    {
+        this.mDyePack.slowDown();
+    }
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Zero)) 
+    {
+        this.kTopVals = 0;
+    }
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.One)) 
+    {
+        this.kTopVals = 1;
+    }    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Two)) 
+    {
+        this.kTopVals = 2;
+    }    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Three)) 
+    {
+        this.kTopVals = 3;
+    }
 };
 
 MyGame.prototype.setMessage = function ()
