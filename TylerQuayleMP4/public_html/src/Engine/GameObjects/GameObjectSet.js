@@ -59,6 +59,7 @@ GameObjectSet.prototype.checkPacks = function(aCamera)
     //document.getElementById("debug").innerHTML = debug;
 };
 
+
 GameObjectSet.prototype.slowDown = function()
 {
     //var debug = " " + camRSide + " <br> "; 
@@ -69,3 +70,12 @@ GameObjectSet.prototype.slowDown = function()
     }
     //document.getElementById("debug").innerHTML = debug;
 };
+
+GameObjectSet.prototype.setInfo = function(info)
+{
+    var i;
+    for (i = 0; i < this.mSet.length; i++) {
+        this.mSet[i].setInfo(info);
+    }
+};
+
