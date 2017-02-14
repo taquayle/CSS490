@@ -4,7 +4,7 @@
  */
 
 /*jslint node: true, vars: true */
-/*global  */
+/*global, BoundingBox  */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -56,6 +56,17 @@ GameObjectSet.prototype.checkPacks = function(aCamera)
     }
 };
 
+GameObjectSet.prototype.checkPatrols = function(aCamera)
+{
+    this.checkPacks(aCamera);
+    for (var i = 0; i < this.mSet.length; i++) {
+        if( this.mSet[i].getWingAlpha()[0] >= 1 || 
+            this.mSet[i].getWingAlpha()[1] >= 1)
+        {
+            this.removeFromSet(this.mSet[i]);
+        }
+    }
+};
 
 GameObjectSet.prototype.slowDown = function()
 {
@@ -75,24 +86,21 @@ GameObjectSet.prototype.speedUp = function()
 
 GameObjectSet.prototype.setInfo = function(info)
 {
-    var i;
-    for (i = 0; i < this.mSet.length; i++) {
+    for (var i = 0; i < this.mSet.length; i++) {
         this.mSet[i].setInfo(info);
     }
 };
 
 GameObjectSet.prototype.updateInfo = function()
 {
-    var i;
-    for (i = 0; i < this.mSet.length; i++) {
+    for (var i = 0; i < this.mSet.length; i++) {
         this.mSet[i].updateInfo();
     }
 };
 
 GameObjectSet.prototype.triggerShake = function()
 {
-    var i;
-    for (i = 0; i < this.mSet.length; i++) {
+    for (var i = 0; i < this.mSet.length; i++) {
         this.mSet[i].shake();
     }
 };
@@ -106,9 +114,32 @@ GameObjectSet.prototype.checkPatrolBounds = function(camera)
 
 GameObjectSet.prototype.checkForCollide = function(toCheck)
 {
-    var inBox = toCheck.getBBox();
+    var inBox;
      for (var i = 0; i < this.mSet.length; i++) {
-       if(this.mSet[i].checkForCollide(inBox))
-           this.mSet[i].shove();
+         for(var j = 0; j < toCheck.size(); j++)
+         {
+            inBox = toCheck.getObjectAt(j);
+            if(this.mSet[i].checkForBigBoxCollide(inBox.getBBox()))
+            {
+                toCheck.slowDown();
+                if(this.mSet[i].checkForCollide(inBox.getBBox()))
+                {
+                    toCheck.removeFromSet(inBox);
+                }
+            }
+        }
     }
+};
+
+GameObjectSet.prototype.checkForDyeCollide = function(dye)
+{
+     for (var i = 0; i < this.mSet.length; i++) 
+        if(this.mSet[i].checkForDyeCollide(dye.getBBox()))
+            dye.shake();
+};
+
+GameObjectSet.prototype.showBorder = function()
+{
+     for (var i = 0; i < this.mSet.length; i++)
+         this.mSet[i].showBorder();
 };
