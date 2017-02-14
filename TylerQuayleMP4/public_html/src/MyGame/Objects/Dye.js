@@ -27,7 +27,7 @@ function Dye(spriteTexture) {
     this.mDye.setElementPixelPositions(0, 120, 0, 180);
     
     this.mInfo = new FontRenderable("DEBUG");
-    this.mInfo.setColor([0, 0, 0, 1]);
+    this.mInfo.setColor([1, 1, 1, 1]);
     this.mInfo.setTextHeight(2);
     this.mInfo.getXform().setPosition(35, 50);
     GameObject.call(this, this.mDye);

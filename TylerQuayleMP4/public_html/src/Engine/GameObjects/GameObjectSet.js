@@ -46,29 +46,31 @@ GameObjectSet.prototype.removeFromSet = function (obj) {
 GameObjectSet.prototype.checkPacks = function(aCamera)
 {
     var camRSide = aCamera.getWCCenter()[0] + (aCamera.getWCWidth()/2);
-    //var debug = " " + camRSide + " <br> "; 
     var i, obj, x;
     for (i = 0; i < this.mSet.length; i++) {
         obj = this.mSet[i];
         x = obj.getPosition()[0];
-        //debug += i +  x + "<br>";
         if (obj.hasExpired() || x > camRSide || obj.getSpeed() <= 0 ) {
             this.removeFromSet(obj);
         }
     }
-    //document.getElementById("debug").innerHTML = debug;
 };
 
 
 GameObjectSet.prototype.slowDown = function()
 {
-    //var debug = " " + camRSide + " <br> "; 
     var i, obj;
     for (i = 0; i < this.mSet.length; i++) {
         obj = this.mSet[i];
-        obj.slowDown();
-    }
-    //document.getElementById("debug").innerHTML = debug;
+        obj.slowDown();}
+};
+
+GameObjectSet.prototype.speedUp = function()
+{
+    var i, obj;
+    for (i = 0; i < this.mSet.length; i++) {
+        obj = this.mSet[i];
+        obj.speedUp();}
 };
 
 GameObjectSet.prototype.setInfo = function(info)
@@ -95,3 +97,9 @@ GameObjectSet.prototype.triggerShake = function()
     }
 };
 
+GameObjectSet.prototype.checkPatrolBounds = function(camera)
+{
+    for (var i = 0; i < this.mSet.length; i++) {
+        camera.clampAtBoundary(this.mSet[i].getXform(), 0.95);
+    }
+};

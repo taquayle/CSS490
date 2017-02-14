@@ -25,7 +25,7 @@ function DyePack(texture, atX, atY, kD) {
     GameObject.call(this, this.mDyePack);
     
     this.mInfo = new FontRenderable("DEBUG");
-    this.mInfo.setColor([0, 0, 0, 1]);
+    this.mInfo.setColor([1, 1, 1, 1]);
     this.mInfo.setTextHeight(1.5);
     this.updateInfo();
 }
@@ -71,7 +71,8 @@ DyePack.prototype.updateInfo = function()
 
 DyePack.prototype.setSpeed = function(kDel){this.kDelta = kDel;};
 DyePack.prototype.getSpeed = function() {return this.kDelta;};
-DyePack.prototype.slowDown = function() { this.kDelta -= .1; };
+DyePack.prototype.slowDown = function() { this.kDelta -= .1;};
+DyePack.prototype.speedUp = function() { this.kDelta += .1;};
 
 DyePack.prototype.getPosition = function()
 {
