@@ -5,7 +5,7 @@
 
 /*jslint node: true, vars: true */
 /*global gEngine, Scene, GameObjectset, TextureObject, Camera, vec2,
-  FontRenderable, SpriteRenderable, DyePack, Dye, GameObject */
+  FontRenderable, SpriteRenderable, DyePack, Patrol ,Dye, GameObject */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -22,12 +22,13 @@ function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
 
     this.temp = 0;
-    this.kPackDelta = 1.5;
+    this.kPackDelta = 2;
     this.mChar = null;
     this.PAUSE = false;
     this.mShowInfo = false;
     this.mPause = null;
     this.mDyePack = new GameObjectSet();
+    this.mPatrol = new GameObjectSet();
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -90,7 +91,6 @@ MyGame.prototype.initialize = function () {
     this.mPause.getXform().setPosition(mCCenter[0], mCCenter[1]);
     this.mPause.setTextHeight(3);
     
-    this.kPackDelta = 2;
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -103,7 +103,7 @@ MyGame.prototype.draw = function () {
     this.mChar.draw(this.mCamera);
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     this.mDyePack.draw(this.mCamera);
-
+    this.mPatrol.draw(this.mCamera);
     if(this.PAUSE)
         this.mPause.draw(this.mCamera);
     
@@ -119,15 +119,6 @@ MyGame.prototype.draw = function () {
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
-            // create dye pack and remove the expired ones ...
-
-    var heroPos = this.mChar.getXform().getPosition();
-    
-    //this.mTopCams[3].setWCCenter(this.mDyePack[0].getXForm().getXPos(), heroPos[1]);
-    this.mDyePack.update();
-    this.mDyePack.checkPacks(this.mCamera);
-    this.mChar.update(this.mCamera);
-    this.setMessage();
     this.mTopCams[0].panTo(this.mChar.getXform().getXPos(), this.mChar.getXform().getYPos());
     if(this.mDyePack.size() > 0)
     {
@@ -137,38 +128,39 @@ MyGame.prototype.update = function () {
         this.mTopCams[0].panTo(x, y);
     }
     
-        
-    
-
-
     if(!this.PAUSE)
     {
         var heroPos = this.mChar.getXform().getPosition();
-        this.mCamera.setWCCenter(Math.random(), Math.random());
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))  
         {
             this.mDyePack.addToSet(new DyePack(this.kMinionSprite, 
                                                     heroPos[0], 
                                                     heroPos[1],
-                                                    this.mPackDelta));
+                                                    this.kPackDelta));
         }
     
         this.mDyePack.update();
-        this.mDyePack.checkPacks(this.mCamera);
+        this.mPatrol.update();
         this.mChar.update(this.mCamera);
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.D)) 
         {
             this.mDyePack.slowDown();
         }
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) 
+        {
+            this.mDyePack.triggerShake();
+        }
+        
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.C)) 
+        {
+            this.spawnPatrol();
+        }
     }
-    else
-    {
-        this.setInfo();
-    }
+
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P))
     {
         this.PAUSE = !this.PAUSE;
-        this.mShowInfo = false;
+        this.mShowInfo = !this.mShowInfo;
         this.setInfo();
     }
         
@@ -188,8 +180,13 @@ MyGame.prototype.update = function () {
     {
         this.kTopVals = 3;
     }
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) 
-        this.mShowInfo = !this.mShowInfo;
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) 
+    {
+        this.mDyePack.slowDown();
+        this.mDyePack.updateInfo();
+    }
+    
+    this.mDyePack.checkPacks(this.mCamera);
     this.setMessage();
     
 };
@@ -198,7 +195,7 @@ MyGame.prototype.setInfo = function()
 {
     this.mChar.setInfo(this.mShowInfo);
     this.mDyePack.setInfo(this.mChar.showInfo());
-
+    this.mPatrol.setInfo(this.mChar.showInfo());
 };
 
 MyGame.prototype.setMessage = function ()
@@ -208,7 +205,7 @@ MyGame.prototype.setMessage = function ()
     var canvas = document.getElementById("GLCanvas");
     var msg = "MousePos: ";
     msg += "[" + x.toPrecision(4) + " " + y.toPrecision(4) + "]";
-    msg += "Canvas size: [" + canvas.width + " " + canvas.height + "]";
+    msg += " Canvas size: [" + canvas.width + " " + canvas.height + "]";
     msg += " Dye Packs: " + this.mDyePack.size();
     msg += "";
     this.mMsg.setText(msg);
@@ -220,4 +217,23 @@ MyGame.prototype.setCanvasSize = function(pW, pH)
     var h = window.innerHeight * pH;
     document.getElementById("GLCanvas").width = w;
     document.getElementById("GLCanvas").height = h;
+};
+
+MyGame.prototype.spawnPatrol = function()
+{
+    var debug = "";
+    var left = this.mCamera.getWCCenter()[0] - (this.mCamera.getWCWidth()/2);
+    var right =  this.mCamera.getWCCenter()[0] + (this.mCamera.getWCWidth()/2);
+    var top = this.mCamera.getWCCenter()[0] + (this.mCamera.getWCHeight()/2);
+    var bot =  this.mCamera.getWCCenter()[0] - (this.mCamera.getWCHeight()/2);
+    var mX = (Math.random() * right) + left;
+    var mY = (Math.random() * top) + bot;
+    debug += this.mCamera.getWCHeight() + " " + this.mCamera.getWCWidth() +" <br>";
+    debug += mX + " " + mY;
+    
+    this.mPatrol.addToSet(new Patrol(this.kMinionSprite, 
+                                                    mX, 
+                                                    mY,
+                                                    this.kPackDelta));
+    document.getElementById("debug").innerHTML = debug;
 };

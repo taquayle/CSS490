@@ -79,3 +79,19 @@ GameObjectSet.prototype.setInfo = function(info)
     }
 };
 
+GameObjectSet.prototype.updateInfo = function()
+{
+    var i;
+    for (i = 0; i < this.mSet.length; i++) {
+        this.mSet[i].updateInfo();
+    }
+};
+
+GameObjectSet.prototype.triggerShake = function()
+{
+    var i;
+    for (i = 0; i < this.mSet.length; i++) {
+        this.mSet[i].shake();
+    }
+};
+

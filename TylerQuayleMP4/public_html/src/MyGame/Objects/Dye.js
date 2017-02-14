@@ -4,7 +4,7 @@
  */
 
 /*jslint node: true, vars: true */
-/*global vec2, vec3, BoundingBox, gEngine: false, GameObject: false, ShakePosition,FontRenderable
+/*global vec2, vec3, BoundingBox, gEngine: false, GameObject: false, ShakePosition,FontRenderable, Interpolate,
  * SpriteRenderable: false */
 
 /* find out more about jslint: http://www.jslint.com/help.html */
@@ -12,8 +12,8 @@ function Dye(spriteTexture) {
     this.kDelta = 0.3;
     this.mXMag = this.kDelta;
     this.mYMag = this.kDelta;
-    this.mIntX = new Interpolate(0, 120, .05);
-    this.mIntY = new Interpolate(0, 120, .05);
+    this.mIntX = new Interpolate(35, 120, .05);
+    this.mIntY = new Interpolate(50, 120, .05);
 
     this.mShowInfo = false;
 
@@ -42,38 +42,33 @@ Dye.prototype.draw = function(mCamera)
 };
 Dye.prototype.update = function (mCamera) 
 {
-
-    var debug = "";
-    if(this.mShowInfo)
-        this.updateInfo();
-    var xform = this.mDye.getXform();
-
-
+    this.mIntX.updateInterpolation();
+    this.mIntY.updateInterpolation();
     if(this.mSToggle)
     {
         if(this.mShake.shakeDone())
-            this.mSToggle = !this.SToggle;
+            this.mSToggle = false;
             
         else
         {
             var s = this.mShake.getShakeResults();
             this.mDye.getXform().setSize(9-s[0], 12-s[1]);
         }
-        this.moveX(xform, -1);
     }
     
 
     
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.J)) 
     {
-        this.shakeDye();
+        this.mSToggle = true;
+        this.mShake = new ShakePosition(4.5, 6, 4, 60);
     }
     
-
-    if(mCamera.isMouseInViewport())
-        this.moveToMouse(xform, mCamera);
-    
-    document.getElementById("debug").innerHTML = debug;
+    var xform = this.mDye.getXform();
+    this.mIntX.setFinalValue(mCamera.mouseWCX());
+    this.mIntY.setFinalValue(mCamera.mouseWCY());
+    xform.setXPos(this.mIntX.getValue());
+    xform.setYPos(this.mIntY.getValue());
 };
 
 Dye.prototype.updateInfo = function()
@@ -86,42 +81,5 @@ Dye.prototype.updateInfo = function()
                                         d.getYPos() - (d.getSize()[1]/2));
 };
 
-Dye.prototype.moveToMouse = function(xform, mCamera)
-{
-
-    if((mCamera.mouseWCX() - xform.getXPos()) < 10 ||
-            (mCamera.mouseWCY() - xform.getYPos()) < 10)
-    {
-        if(mCamera.mouseWCX() < xform.getXPos())
-            this.moveX(xform, -1);
-        else
-            this.moveX(xform, 1);
-    
-  
-        if(mCamera.mouseWCY() < xform.getYPos())
-            this.moveY(xform, -1);
-        else
-            this.moveY(xform, 1);
-    
-};
-
-
-
 Dye.prototype.showInfo = function() {return this.mShowInfo;};
 Dye.prototype.setInfo = function(info) { this.mShowInfo = info; this.updateInfo();};
-/******************************************************************************/
-// moveY
-//  Move in the Y direction, check updated coordinate and undo if illegal
-/******************************************************************************/
-Dye.prototype.moveY = function (xform, dir)
-{
-    xform.incYPosBy((this.kDelta * dir));
-};
-/******************************************************************************/
-// moveX
-//  Move in the X direction, check updated coordinate and undo if illegal
-/******************************************************************************/
-Dye.prototype.moveX = function (xform, dir)
-{
-    xform.incXPosBy((this.kDelta * dir));
-};
