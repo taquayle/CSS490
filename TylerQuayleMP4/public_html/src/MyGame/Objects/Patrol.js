@@ -85,10 +85,7 @@ Patrol.prototype.update = function () {
         }
     }
     
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.J)) 
-    {
-        this.mSToggle = true;
-    }
+
     this.updateBigBox();
     if(this.mShowBorder)
     {

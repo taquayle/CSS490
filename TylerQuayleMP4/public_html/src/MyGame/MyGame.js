@@ -11,28 +11,38 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
-    this.canW = .9; // How Much of the available window Width is used
-    this.canH = .9; // How much of the available window Height is used
-    this.statTextSize = 2.5;  // Text size for the bottom stats
-    this.topBuffSize = 3; // Space between top cameras
-    // The camera to view the scene
-    this.mCamera = null;
-    this.mTopCams = null;
-    this.kTopVals = 0;
-    this.mMsg = null;
-    
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kBg = "assets/bg2.png";
-    this.temp = 0;
-    this.kPackDelta = 2;
-    this.mChar = null;
-    this.PAUSE = false;
-    this.mShowInfo = false;
-    this.mShowBord = false;
-    this.mBg = null;
-    this.mPause = null;
+    /**************************************************************************/
+    //  CAMERAS
+    this.mCamera = null;
+    this.mTopCams = null;
+    /**************************************************************************/
+    //  VALUES
+    this.kPackDelta = 2;            // Speed of Dye Packs
+    this.kTopVals = 0;              // Top Cameras
+    this.kCanW = .9;                // How Much of the window Width is used
+    this.kCanH = .9;                // How much of the window Height is used
+    this.statTextSize = 2.5;        // Text size for the bottom stats
+    this.topBuffSize = 3;           // Space between top cameras
+    this.spawnRange = [120, 180];   // Range for spawn
+    this.spaawnTimer = 0;           // Keep track of auto spawning 
+    /**************************************************************************/
+    //  TOGGLES
+    this.PAUSE = false;         // Toggle Pause
+    this.mShowInfo = false;     // Show info about objects
+    this.mShowBord = false;     // Show borders around objects hitboxes
+    this.mSpawnToggle = false;  //  
+    /**************************************************************************/
+    //  OBJECTS
     this.mDyePack = new GameObjectSet();
     this.mPatrols = new GameObjectSet();
+    this.mBg = null;
+    /**************************************************************************/
+    //  MESSAGES
+    this.mChar = null;
+    this.mMsg = null;
+    this.mPause = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -45,24 +55,21 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kBg);
     gEngine.Core.cleanUp(); // release gl resources
-    
-//    var nextLevel = new Editor();  // next level to be loaded
-//    gEngine.Core.startScene(nextLevel);
 };
 MyGame.prototype.initialize = function () {
     // Step A: set up the cameras
-    this.setCanvasSize(this.canW,this.canH);
+    this.setCanvasSize(this.kCanW,this.kCanH);
     var canvas = document.getElementById("GLCanvas");
     this.mChar = new Dye(this.kMinionSprite);
     
     var mCamHeight = canvas.height * .8;
     this.mCamera = new Camera(
-        vec2.fromValues(35, 50), // position of the camera
-        200,                       // width of camera
-        [0, 0, canvas.width, mCamHeight]           // viewport (orgX, orgY, width, height)
+        vec2.fromValues(35, 50),    // position of the camera
+        200,                        // width of camera
+        [0, 0, canvas.width, mCamHeight] // viewport (orgX, orgY, width, height)
     );
-    this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
-            // sets the background to gray
+    this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]); // sets the background to gray
+            
     this.mTopCams = [];
     var mTopCamWidth = canvas.width / 4;
     for(var i = 0; i < 4; i++)
@@ -144,6 +151,11 @@ MyGame.prototype.update = function () {
     
     if(!this.PAUSE)
     {
+        if(this.mSpawntoggle)
+        {
+            this.autoSpawn();
+        }
+        
         var heroPos = this.mChar.getXform().getPosition();
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))  
         {
@@ -153,7 +165,7 @@ MyGame.prototype.update = function () {
                                                     this.kPackDelta,
                                                     this.mShowBord));
         }
-    
+        
         this.mDyePack.update();
         this.mPatrols.update();
         this.mChar.update(this.mCamera);
@@ -171,7 +183,17 @@ MyGame.prototype.update = function () {
         {
             this.spawnPatrol();
         }
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.J)) 
+        {
+            this.mPatrols.triggerShake();
+        }
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.I))
+        {
+            this.mSpawntoggle = !this.mSpawnToggle;
+            this.spawnTimer = (Math.random()*this.spawnRange[1]) + this.spawnRange[0];
+        }
     }
+
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P))
     {
@@ -180,19 +202,19 @@ MyGame.prototype.update = function () {
         this.setInfo();
     }
         
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Zero)) 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Zero)) 
     {
         this.kTopVals = 0;
     }
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.One)) 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.One)) 
     {
         this.kTopVals = 1;
     }    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Two)) 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Two)) 
     {
         this.kTopVals = 2;
     }    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Three)) 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Three)) 
     {
         this.kTopVals = 3;
     }
@@ -236,6 +258,7 @@ MyGame.prototype.setMessage = function ()
     msg += " Canvas size (px): [" + canvas.width + " " + canvas.height + "]";
     msg += " Dye Packs: " + this.mDyePack.size();
     msg += " Patrols: " + this.mPatrols.size();
+    msg += " AutoSpawn: " + this.mSpawnToggle;
     this.mMsg.setText(msg);
 };
 
@@ -273,4 +296,14 @@ MyGame.prototype.showBorders = function()
     this.mShowBord = !this.mShowBord;
     this.mChar.showBorder(this.mShowBord);
     this.mPatrols.showBorder();
+};
+
+MyGame.prototype.autoSpawn = function()
+{
+    this.spawnTimer--;
+    if(this.spawnTimer <= 0)
+    {
+        this.spawnPatrol();
+        this.spawnTimer = (Math.random()*this.spawnRange[1]) + this.spawnRange[0];
+    }
 };

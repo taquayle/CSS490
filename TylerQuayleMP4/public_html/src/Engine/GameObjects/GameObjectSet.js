@@ -124,7 +124,8 @@ GameObjectSet.prototype.checkForCollide = function(toCheck)
                 toCheck.slowDown();
                 if(this.mSet[i].checkForCollide(inBox.getBBox()))
                 {
-                    toCheck.removeFromSet(inBox);
+                    inBox.shake();
+                    //toCheck.removeFromSet(inBox);
                 }
             }
         }
