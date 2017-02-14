@@ -11,9 +11,9 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
-    this.canW = .9;
-    this.canH = .9;
-    this.statTextSize = 2.5;
+    this.canW = .9; // How Much of the available window Width is used
+    this.canH = .9; // How much of the available window Height is used
+    this.statTextSize = 2.5;  // Text size for the bottom stats
     this.topBuffSize = 3; // Space between top cameras
     // The camera to view the scene
     this.mCamera = null;
@@ -37,8 +37,6 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
-    
-    //gEngine.Textures.loadTexture(this.kMinionPortal);
     gEngine.Textures.loadTexture(this.kBg);
 };
 
@@ -47,8 +45,8 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kBg);
     gEngine.Core.cleanUp(); // release gl resources
     
-    var nextLevel = new Editor();  // next level to be loaded
-    gEngine.Core.startScene(nextLevel);
+//    var nextLevel = new Editor();  // next level to be loaded
+//    gEngine.Core.startScene(nextLevel);
 };
 MyGame.prototype.initialize = function () {
     // Step A: set up the cameras
@@ -206,7 +204,8 @@ MyGame.prototype.update = function () {
     this.mDyePack.checkPacks(this.mCamera);
     this.mPatrol.checkPatrolBounds(this.mCamera);
     this.setMessage();
-    
+
+    this.checkForCollide();
 };
 
 MyGame.prototype.setInfo = function()
@@ -249,4 +248,14 @@ MyGame.prototype.spawnPatrol = function()
                                                     mX, 
                                                     mY,
                                                     this.kPackDelta));
+};
+
+MyGame.prototype.checkForCollide = function()
+{
+    var pBox;
+    
+    for (var i = 0; i < this.mDyePack.size(); i++)
+    {
+        this.mPatrol.checkForCollide(this.mDyePack.getObjectAt(i));
+    }
 };

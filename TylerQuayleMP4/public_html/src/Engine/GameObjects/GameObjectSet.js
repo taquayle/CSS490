@@ -103,3 +103,12 @@ GameObjectSet.prototype.checkPatrolBounds = function(camera)
         camera.clampAtBoundary(this.mSet[i].getXform(), 0.95);
     }
 };
+
+GameObjectSet.prototype.checkForCollide = function(toCheck)
+{
+    var inBox = toCheck.getBBox();
+     for (var i = 0; i < this.mSet.length; i++) {
+       if(this.mSet[i].checkForCollide(inBox))
+           this.mSet[i].shove();
+    }
+};

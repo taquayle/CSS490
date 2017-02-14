@@ -42,7 +42,7 @@ function Patrol(texture, atX, atY, kD) {
     this.mInfo.setColor([1, 1, 1, 1]);
     this.mInfo.setTextHeight(1.5);
     
-    this.mBounds = BoundingBox
+    //this.bBox = this.mHead.getBBox();
 }
 gEngine.Core.inheritPrototype(Patrol, GameObject);
 
@@ -60,7 +60,7 @@ Patrol.prototype.update = function () {
     this.mTopWing.update();
     this.mTopWing.moveTo(this.mHead.getXform());
  
-    this.randomMove();
+    //this.randomMove();
     if(this.mSToggle)
     {
         if(this.mShake.shakeDone())
@@ -120,6 +120,8 @@ Patrol.prototype.getPosition = function()
 
 Patrol.prototype.shake = function(){ this.mSToggle = true; };
 
+Patrol.prototype.shove = function(){ this.mHead.getXform().incXPosBy(10);};
+
 Patrol.prototype.setInfo = function(info) 
 {   
     this.mShowInfo = info;
@@ -128,3 +130,11 @@ Patrol.prototype.setInfo = function(info)
     this.updateInfo();
 };
 
+Patrol.prototype.checkForCollide = function(inBox)
+{
+    if(this.mHead.getBBox().intersectsBound(inBox))
+    {
+        return true;
+    }
+    return false;
+};

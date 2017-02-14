@@ -58,7 +58,7 @@ Dye.prototype.update = function (mCamera)
     
 
     
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.J)) 
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Q)) 
     {
         this.mSToggle = true;
         this.mShake = new ShakePosition(4.5, 6, 4, 60);
