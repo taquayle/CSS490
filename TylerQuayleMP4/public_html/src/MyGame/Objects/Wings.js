@@ -118,12 +118,20 @@ Wings.prototype.checkForCollide = function(inBox)
 {
     if(this.getBBox().intersectsBound(inBox))
     {
-        this.hit();
         return true;
     }
     return false;
 };
 
+Wings.prototype.checkForPixelCollide = function(check,h)
+{
+    if(this.pixelTouches(check, h))
+    {
+        this.hit();
+        return true;
+    }
+    return false;
+};
 Wings.prototype.setInfo = function(info) 
 { this.mShowInfo = info;
     this.updateInfo();

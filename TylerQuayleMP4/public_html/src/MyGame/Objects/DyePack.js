@@ -15,6 +15,7 @@ function DyePack(texture, atX, atY, kD) {
     this.mShowInfo = false;
     this.mShake = new ShakePosition(4, .02, 20, 300);
     this.mSToggle = false;
+    this.mInBound = false;
     
     this.mDyePack = new SpriteRenderable(texture);
     this.mDyePack.setColor([1, 1, 1, 0]);
@@ -33,7 +34,6 @@ gEngine.Core.inheritPrototype(DyePack, GameObject);
 
 DyePack.prototype.draw = function (mCamera) {
     this.mDyePack.draw(mCamera);
-    
     if(this.mShowInfo)
       this.mInfo.draw(mCamera);
 };
@@ -62,29 +62,34 @@ DyePack.prototype.updateInfo = function()
     var d = this.mDyePack.getXform();
     var info = "(" + d.getXPos().toPrecision(4);
     info += "," + d.getYPos().toPrecision(4) + ")";
-    info += " [" + this.kDelta.toPrecision(3) + "]";
+    info += " S[" + this.kDelta.toPrecision(3) + "]";
     this.mInfo.setText(info);
     this.mInfo.getXform().setPosition(d.getXPos() - (d.getSize()[0]), 
                                         d.getYPos() - (d.getSize()[1]/2));
 };
-
-
-DyePack.prototype.setSpeed = function(kDel){this.kDelta = kDel;};
-DyePack.prototype.getSpeed = function() {return this.kDelta;};
-DyePack.prototype.slowDown = function() { this.kDelta -= .1;};
-DyePack.prototype.speedUp = function() { this.kDelta += .1;};
 
 DyePack.prototype.getPosition = function()
 {
     return this.mDyePack.getXform().getPosition();
 };
 
-
-DyePack.prototype.hasExpired = function() { return (this.mCycleLeft <= 0); };
-DyePack.prototype.shake = function(){ this.mSToggle = true; };
+DyePack.prototype.isInbound = function() 
+{
+    if(this.mInBound)
+        return true;
+    return false;
+};
 
 DyePack.prototype.setInfo = function(info) 
 { this.mShowInfo = info;
     this.updateInfo();
 };
 
+DyePack.prototype.setSpeed = function(kDel){this.kDelta = kDel;};
+DyePack.prototype.getSpeed = function() {return this.kDelta;};
+DyePack.prototype.slowDown = function() { this.kDelta -= .1;};
+DyePack.prototype.speedUp = function() { this.kDelta += .1;};
+DyePack.prototype.hasExpired = function() { return (this.mCycleLeft <= 0); };
+DyePack.prototype.shake = function(){ this.mSToggle = true; };
+DyePack.prototype.inBound = function() {this.mInBound = true;};
+DyePack.prototype.outBound = function() {this.mInBound = false;};

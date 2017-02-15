@@ -9,14 +9,16 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Patrol(texture, atX, atY, kD, sho) {
+function Patrol(texture, atX, atY, kD, sho, mov) {
     
     this.kDelta = .3;
     
     this.mShowInfo = false;
     this.mShowBorder = false;
-    this.mShake = new ShakePosition(3.5, 3.5, 4, 60);
     this.mSToggle = false;
+    this.mMoveToggle = mov;
+    this.mShake = new ShakePosition(3.5, 3.5, 4, 60);
+    
     
     this.dir = [-1, 0, 1];
     this.xDirDesc = ["left ", " ", "right "];
@@ -69,7 +71,8 @@ Patrol.prototype.update = function () {
     this.mBotWing.moveTo(this.mHead.getXform());
     this.mTopWing.update();
     this.mTopWing.moveTo(this.mHead.getXform());
-    this.randomMove();
+    if(this.mMoveToggle)
+        this.randomMove();
     
     if(this.mSToggle)
     {
@@ -126,7 +129,7 @@ Patrol.prototype.newDirection = function()
     this.mCycleLeft = 60;
 };
 
-
+Patrol.prototype.toggleMovement = function(){this.mMoveToggle = !this.mMoveToggle;};
 Patrol.prototype.setSpeed = function(kDel){this.kDelta = kDel;};
 Patrol.prototype.getSpeed = function() {return this.kDelta;};
 Patrol.prototype.slowDown = function() { this.kDelta -= .1; };
@@ -163,24 +166,18 @@ Patrol.prototype.setInfo = function(info)
 
 Patrol.prototype.checkForBigBoxCollide = function(inBox)
 {
-    var debug = this.bigBox.minX() + " "  + this.bigBox.minY() + "<br>";
-    debug += this.bigBox.maxX() + " "  + this.bigBox.maxY();
-    document.getElementById('debug').innerHTML = debug;
     return this.bigBox.intersectsBound(inBox);
 };
 Patrol.prototype.checkForCollide = function(inBox)
 {
     if(this.getBBox().intersectsBound(inBox))
     {
-        this.shake();
-        this.shove();
+
         return true;
     }
     
     return  (  this.mTopWing.checkForCollide(inBox)
             || this.mBotWing.checkForCollide(inBox));
-    
-    return false;
 };
 Patrol.prototype.checkForDyeCollide = function(inBox)
 {
@@ -207,5 +204,18 @@ Patrol.prototype.updateBigBox = function()
     var cY = (tE + boE)/2;
     this.bigBox.setBounds([cX, cY], baE - fE, (tE - boE) * 1.5);
 };
+
+Patrol.prototype.checkForPixelCollide = function (check, h)
+{
+    if(this.pixelTouches(check, h))
+    {
+        this.shake();
+        this.shove();
+        return true;
+    }
+    return  (  this.mTopWing.checkForPixelCollide(check, h)
+            || this.mBotWing.checkForPixelCollide(check, h));
+};
 //Only needed for modularization 
 Patrol.prototype.hasExpired = function() { return false; };
+Patrol.prototype.inBound = function() {return false;};

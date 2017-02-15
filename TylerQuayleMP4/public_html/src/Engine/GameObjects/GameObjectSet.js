@@ -102,7 +102,7 @@ GameObjectSet.prototype.triggerShake = function()
 {
     for (var i = 0; i < this.mSet.length; i++) {
         this.mSet[i].shake();
-    }
+        this.mSet[i].inBound();}
 };
 
 GameObjectSet.prototype.checkPatrolBounds = function(camera)
@@ -112,23 +112,35 @@ GameObjectSet.prototype.checkPatrolBounds = function(camera)
     }
 };
 
+GameObjectSet.prototype.toggleMovement = function()
+{
+    for (var i = 0; i < this.mSet.length; i++) {
+        this.mSet[i].toggleMovement();}
+};
+
 GameObjectSet.prototype.checkForCollide = function(toCheck)
 {
     var inBox;
-     for (var i = 0; i < this.mSet.length; i++) {
-         for(var j = 0; j < toCheck.size(); j++)
-         {
-            inBox = toCheck.getObjectAt(j);
-            if(this.mSet[i].checkForBigBoxCollide(inBox.getBBox()))
-            {
-                toCheck.slowDown();
-                if(this.mSet[i].checkForCollide(inBox.getBBox()))
-                {
-                    inBox.shake();
-                    //toCheck.removeFromSet(inBox);
-                }
-            }
-        }
+    for (var i = 0; i < this.mSet.length; i++) 
+    {
+        for(var j = 0; j < toCheck.size(); j++)
+        {
+           inBox = toCheck.getObjectAt(j);
+           if(this.mSet[i].checkForBigBoxCollide(inBox.getBBox()))
+           {
+               inBox.inBound();
+               inBox.slowDown();
+               inBox.shake();
+               if(this.mSet[i].checkForCollide(inBox.getBBox()))
+               {            
+                   var h = [];
+                   if(this.mSet[i].checkForPixelCollide(inBox, h))
+                   {
+                       toCheck.removeFromSet(inBox);
+                   }
+               }
+           }
+       }
     }
 };
 
@@ -143,4 +155,17 @@ GameObjectSet.prototype.showBorder = function()
 {
      for (var i = 0; i < this.mSet.length; i++)
          this.mSet[i].showBorder();
+};
+
+GameObjectSet.prototype.getCurInbound = function()
+{
+    var c = [];
+    for (var i = 0; i < this.mSet.length; i++) 
+    {
+        if(this.mSet[i].isInbound()){
+            c.push(i);}
+    }
+    while(c.length < 3)
+        c.push(-1);
+    return c;
 };
