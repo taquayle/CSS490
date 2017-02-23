@@ -1,3 +1,4 @@
+{::nomarkdown}
 <html xmlns:v="urn:schemas-microsoft-com:vml"
 xmlns:o="urn:schemas-microsoft-com:office:office"
 xmlns:w="urn:schemas-microsoft-com:office:word"
@@ -1990,7 +1991,7 @@ collision detection. Here are the details:</p>
 <p class=MsoListParagraphCxSpFirst style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l11 level1 lfo27'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'>Drawing</b>
 the RigidRectangle and the circle bound:</p>
 
@@ -2031,7 +2032,7 @@ style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l11 level1 lfo27'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'>User Control</b>:
 </p>
 
@@ -2059,7 +2060,7 @@ detection. Here are the details:</p>
 <p class=MsoListParagraphCxSpFirst style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level1 lfo4'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'>Drawing</b>
 the RigidCircle and the circle bound:<b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 
@@ -2101,9 +2102,9 @@ style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level1 lfo4'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'>Behavior:
-</b><span style='mso-spacerun:yes'> </span><b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
+</b><span style='mso-spacerun:yes'>ï¿½</span><b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:77.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level2 lfo4'><![if !supportLists]><span
@@ -2115,8 +2116,8 @@ in random direction.<b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level3 lfo4'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
-</span></span></span><![endif]>When an enemy’s transform bound touches the WC
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
+</span></span></span><![endif]>When an enemyï¿½s transform bound touches the WC
 bound, it reflects.</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:77.05pt;mso-add-space:
@@ -2129,8 +2130,8 @@ rad per second<b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level3 lfo4'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
-</span></span></span><![endif]>An enemy will not rotate more than ±1 rad from
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
+</span></span></span><![endif]>An enemy will not rotate more than ï¿½1 rad from
 its original position<b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 
 <p class=MsoListParagraphCxSpLast style='margin-left:77.05pt;mso-add-space:
@@ -2149,7 +2150,7 @@ are the details of the world:</p>
 <p class=MsoListParagraphCxSpFirst style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level1 lfo4'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'>Collision</b>:
 All RigidShape in the world must participate in continuous broad phase
 collision</p>
@@ -2170,14 +2171,14 @@ style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level3 lfo4'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
 </span></span></span><![endif]>The Hero has no speed, thus, flipping its
 velocity does not result in any visible behavior changes</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level3 lfo4'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
 </span></span></span><![endif]>When there is a significant interpenetration between
 traveling enemies, the colliding Enemies may resulting in continuous flipping of
 their velocities over subsequent frames. <i style='mso-bidi-font-style:normal'><u>As
@@ -2187,7 +2188,7 @@ a result, it will appear as though the overlapping enemies are not moving</u></i
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level1 lfo4'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'>User control:</b></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:77.05pt;mso-add-space:
@@ -2208,12 +2209,12 @@ auto;text-indent:-.25in;mso-list:l3 level2 lfo4'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New"'><span
 style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>Up/Down arrow keys: increase/decrease the
-bounding circle’s radius</p>
+bounding circleï¿½s radius</p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level3 lfo4'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
 </span></span></span><![endif]>For the enemies, this is why you will observe
 the difference between the RigidCircle and bounding circle. Note: all collisions
 are detected by the broad phase method, and thus at the bounds of the bounding
@@ -2222,7 +2223,7 @@ circle (the white circles)</p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l3 level1 lfo4'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]><b style='mso-bidi-font-weight:normal'>Echo
 status:<o:p></o:p></b></p>
 
@@ -2253,7 +2254,7 @@ style='mso-bidi-font-weight:normal'><o:p>&nbsp;</o:p></b></p>
 <p class=MsoListParagraphCxSpFirst style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>This assignment is not difficult, but requires
 you to understand both of the system: our game engine and the physics engine.<b
 style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
@@ -2263,7 +2264,7 @@ auto;text-indent:-.25in;mso-list:l4 level2 lfo2'><![if !supportLists]><span
 style='font-family:"Courier New";mso-fareast-font-family:"Courier New"'><span
 style='mso-list:Ignore'>o<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>Make sure to read and understand Example 3.1 (Broad
-Phase Method) <span style='mso-spacerun:yes'> </span>from the Physics Book.<b
+Phase Method) <span style='mso-spacerun:yes'>ï¿½</span>from the Physics Book.<b
 style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:77.05pt;mso-add-space:
@@ -2276,8 +2277,8 @@ Support) from our Engine Book.<b style='mso-bidi-font-weight:normal'><o:p></o:p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]>Strategy: we need to remember “physics component”
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]>Strategy: we need to remember ï¿½physics componentï¿½
 in our Game Engine context, is simply another component to the GameObject (just
 like Renderable is a component of the GameObject). As such, in my implementation:<b
 style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
@@ -2314,7 +2315,7 @@ style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>When integrating my RigidShape: <b
 style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 
@@ -2335,7 +2336,7 @@ style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>Note the math library difference (assuming A, B,
 and C: vectors, and t is a scalar):<b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 
@@ -2349,14 +2350,14 @@ normal'><o:p></o:p></b></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level3 lfo2'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
 </span></span></span><![endif]>A = vec2.add(B,C), <b style='mso-bidi-font-weight:
 normal'><o:p></o:p></b></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level3 lfo2'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
 </span></span></span><![endif]>A = vec2.add(B, C * t)<b style='mso-bidi-font-weight:
 normal'><o:p></o:p></b></p>
 
@@ -2370,21 +2371,21 @@ normal'><o:p></o:p></b></p>
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level3 lfo2'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
 </span></span></span><![endif]>vec2.add(A, B, C);<b style='mso-bidi-font-weight:
 normal'><o:p></o:p></b></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:113.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level3 lfo2'><![if !supportLists]><span
 style='font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
-Wingdings'><span style='mso-list:Ignore'>§<span style='font:7.0pt "Times New Roman"'>&nbsp;
+Wingdings'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;
 </span></span></span><![endif]>Vec2.scaleAndAdd(A, B, C, t)<b style='mso-bidi-font-weight:
 normal'><o:p></o:p></b></p>
 
 <p class=MsoListParagraphCxSpMiddle style='margin-left:41.05pt;mso-add-space:
 auto;text-indent:-.25in;mso-list:l4 level1 lfo2'><![if !supportLists]><span
 style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
-Symbol'><span style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Symbol'><span style='mso-list:Ignore'>ï¿½<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>I have added this function to lib/gl-matrix.js:
 to rotate a point (<b style='mso-bidi-font-weight:normal'>aPoint</b>) with
 respect to a reference position (<b style='mso-bidi-font-weight:normal'>refPt</b>):<b
@@ -2395,7 +2396,7 @@ auto'><o:p>&nbsp;</o:p></p>
 
 <p class=MsoNormal style='margin-left:10.1pt;text-indent:30.95pt'>vec2.rotateWRT(out,
 aPoint, angleInRadian, refPt)<b style='mso-bidi-font-weight:normal'><br>
-<span style='mso-spacerun:yes'> </span><span style='mso-tab-count:2'>                    </span></b>//
+<span style='mso-spacerun:yes'>ï¿½</span><span style='mso-tab-count:2'>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ </span></b>//
 rotate aPoint by angleInRadian, WRT refPt<b style='mso-bidi-font-weight:normal'><o:p></o:p></b></p>
 
 <p class=MsoNormal style='margin-left:46.1pt'><b style='mso-bidi-font-weight:
@@ -2409,43 +2410,43 @@ function(out, a, c, pt){<o:p></o:p></span></p>
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>  </span><span style='mso-tab-count:1'>   </span><span
-style='mso-spacerun:yes'>   </span>var r=[];<o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ </span><span style='mso-tab-count:1'>ï¿½ï¿½ </span><span
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½</span>var r=[];<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>        </span><o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ </span><o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>     </span>vec2.subtract(r, a, pt);<o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½ï¿½ </span>vec2.subtract(r, a, pt);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>     </span>vec2.rotate(r, r, c);<o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½ï¿½ </span>vec2.rotate(r, r, c);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>     </span>vec2.add(r, r, pt);<o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½ï¿½ </span>vec2.add(r, r, pt);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>  </span><o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ </span><o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>     </span>out[0] = r[0];<o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½ï¿½ </span>out[0] = r[0];<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>     </span>out[1] = r[1];<o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½ï¿½ </span>out[1] = r[1];<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
@@ -2454,8 +2455,8 @@ exactly'><span style='font-size:10.0pt;font-family:Consolas'><o:p>&nbsp;</o:p></
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
 exactly'><span style='font-size:10.0pt;font-family:Consolas'><span
-style='mso-spacerun:yes'>  </span><span style='mso-tab-count:1'>   </span><span
-style='mso-spacerun:yes'>   </span>return r;<o:p></o:p></span></p>
+style='mso-spacerun:yes'>ï¿½ </span><span style='mso-tab-count:1'>ï¿½ï¿½ </span><span
+style='mso-spacerun:yes'>ï¿½ï¿½ï¿½</span>return r;<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-top:0in;margin-right:0in;margin-bottom:0in;
 margin-left:46.1pt;margin-bottom:.0001pt;line-height:10.0pt;mso-line-height-rule:
@@ -2827,3 +2828,4 @@ Wingdings'>J</span></span>. </p>
 </body>
 
 </html>
+{:/}
