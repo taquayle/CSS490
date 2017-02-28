@@ -2,11 +2,18 @@
 /*jslint node: true, vars: true, evil: true, bitwise: true */
 "use strict";
 
-/* global gEngine */
+/* global gEngine, vec2 */
+
+RigidShape.eRigidType = Object.freeze({
+    eRigidAbstract: 0,
+    eRigidCircle: 1,
+    eRigidRectangle: 2
+});
 
 function RigidShape(xf) {
     this.mLine = new LineRenderable();
-    this.mLine.setColor([1, 1, 1, 1]);
+    this.mColor = [1,1,1,1];
+    this.mLine.setColor(this.mColor);
     
     this.mXform = xf;
     this.mVelocity = vec2.fromValues(0, 0);
@@ -29,6 +36,10 @@ RigidShape.prototype.flipVelocity = function() {
     this.mVelocity[0] = -this.mVelocity[0];
     this.mVelocity[1] = -this.mVelocity[1];
 };
+
+RigidShape.prototype.flipXVelocity = function() { this.mVelocity[0] = -this.mVelocity[0];};
+
+RigidShape.prototype.flipYVelocity = function() { this.mVelocity[1] = -this.mVelocity[1];};
 
 RigidShape.prototype.travel = function(dt) {};
 
@@ -57,7 +68,7 @@ RigidShape.prototype.draw = function(aCamera) {
     var x = this.mXform.getXPos();
     var y = this.mXform.getYPos();
     
-    this.mLine.setColor([1, 1, 1, 1]);
+    this.mLine.setColor(this.mColor);
     this.mLine.setFirstVertex(x - len, y);  //Horizontal
     this.mLine.setSecondVertex(x + len, y); //
     this.mLine.draw(aCamera);
@@ -75,6 +86,7 @@ RigidShape.prototype.drawCircle = function(aCamera, r) {
     var theta = deltaTheta;
     prevPoint[0] += r;
     var i, x, y;
+    //this.mLine.setColor(this.mColor); //CHANGE COLOR OF CIRCLE
     for (i = 1; i <= RigidShape.kNumCircleSides; i++) {
         x = pos[0] + r * Math.cos(theta);
         y = pos[1] +  r * Math.sin(theta);
@@ -87,4 +99,13 @@ RigidShape.prototype.drawCircle = function(aCamera, r) {
         prevPoint[0] = x;
         prevPoint[1] = y;
     }
+};
+
+RigidShape.prototype.setColor = function(r,g,b)
+{
+    this.mColor = [r, g, b, 1];
+};
+
+RigidShape.prototype.getPosition = function() { 
+    return this.mXform.getPosition(); 
 };

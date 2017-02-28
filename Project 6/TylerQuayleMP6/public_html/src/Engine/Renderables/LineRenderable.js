@@ -52,13 +52,14 @@ LineRenderable.prototype.draw = function (aCamera) {
     if (this.mShowLine) {
         gl.drawArrays(gl.LINE_STRIP, 0, 2);
     }
-    if (!this.mShowLine || this.mdrawVertices) {
-        gl.drawArrays(gl.POINTS, 0, 2);
-    }
+//    if (!this.mShowLine || this.mdrawVertices) {
+//        gl.drawArrays(gl.POINTS, 0, 2);
+//    }
 };
 
 LineRenderable.prototype.setDrawVertices = function (s) { this.mDrawVertices = s; };
 LineRenderable.prototype.setShowLine = function (s) { this.mShowLine = s; };
+LineRenderable.prototype.getShowLine = function () { return this.mShowLine; };
 LineRenderable.prototype.setPointSize = function (s) { this.mPointSize = s; };
 
 LineRenderable.prototype.setVertices = function (x1, y1, x2, y2) {

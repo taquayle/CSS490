@@ -62,11 +62,10 @@ Camera.prototype.setWCWidth = function (width) { this.mCameraState.setWidth(widt
 Camera.prototype.getWCWidth = function () { return this.mCameraState.getWidth(); };
 Camera.prototype.getWCHeight = function () { return this.mCameraState.getWidth() * this.mViewport[Camera.eViewport.eHeight] / this.mViewport[Camera.eViewport.eWidth]; };
                                                                                                         // viewportH/viewportW
-
-Camera.prototype.getDimensions = function()
-{
-    return [this.getWCWidth(), this.getWCHeight()];
-};
+/******************************************************************************/
+// ADDED BY QUAYLE
+/******************************************************************************/
+Camera.prototype.getDimensions = function(){return [this.getWCWidth(), this.getWCHeight()];};
 Camera.prototype.setViewport = function (viewportArray, bound) {
     if (bound === undefined) {
         bound = this.mViewportBound;

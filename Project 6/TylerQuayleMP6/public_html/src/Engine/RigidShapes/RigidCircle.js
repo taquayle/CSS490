@@ -5,7 +5,7 @@
  */
 /*jslint node: true, vars: true, evil: true, bitwise: true */
 "use strict";
-/* global RigidShape */
+/* global RigidShape, vec2, gEngine */
 
 var RigidCircle = function (xf, radius) {
     RigidShape.call(this, xf);
@@ -14,6 +14,10 @@ var RigidCircle = function (xf, radius) {
     this.mBoundRadius = radius;
 };
 gEngine.Core.inheritPrototype(RigidCircle, RigidShape);
+
+RigidCircle.prototype.rigidType = function () {
+    return RigidShape.eRigidType.eRigidCircle;
+};
 
 RigidCircle.prototype.travel = function (dt) {
     // linear motion
@@ -27,8 +31,8 @@ RigidCircle.prototype.draw = function (aCamera) {
     RigidShape.prototype.draw.call(this, aCamera);
     
     // kNumSides forms the circle.
-    this.mLine.setColor([0, 0, 0, 1]);
-    this.drawCircle(aCamera, this.mRadius);
+    //this.mLine.setColor([0, 0, 0, 1]);
+    //this.drawCircle(aCamera, this.mRadius);
     
     var p = this.mXform.getPosition();
     var u = [p[0], p[1]+this.mBoundRadius];

@@ -61,7 +61,10 @@ Camera.prototype.getWCCenter = function () { return this.mCameraState.getCenter(
 Camera.prototype.setWCWidth = function (width) { this.mCameraState.setWidth(width); };
 Camera.prototype.getWCWidth = function () { return this.mCameraState.getWidth(); };
 Camera.prototype.getWCHeight = function () { return this.mCameraState.getWidth() * this.mViewport[Camera.eViewport.eHeight] / this.mViewport[Camera.eViewport.eWidth]; };
-                                                                                                        // viewportH/viewportW
+/******************************************************************************/
+// ADDED BY QUAYLE
+/******************************************************************************/
+Camera.prototype.getDimensions = function(){return [this.getWCWidth(), this.getWCHeight()];};                                                                             // viewportH/viewportW
 
 Camera.prototype.setViewport = function (viewportArray, bound) {
     if (bound === undefined) {
@@ -181,4 +184,38 @@ Camera.prototype.clampAtBoundary = function (aXform, zone) {
     }
     return status;
 };
-//</editor-fold>
+/******************************************************************************/
+// WRITE DESC
+/******************************************************************************/
+Camera.prototype.collideWCBoundCircle = function (aXform, zone, circle) {
+    var pos = aXform.getPosition();
+    var c = circle.getBoundRadius();
+    var bbox = new BoundingBox(aXform.getPosition(), c*2, c*2);
+    var w = zone * this.getWCWidth();
+    var h = zone * this.getWCHeight();
+    var cameraBound = new BoundingBox(this.getWCCenter(), w, h);
+    return cameraBound.boundCollideStatus(bbox);
+};
+
+/******************************************************************************/
+// WRITE DESC
+/******************************************************************************/
+Camera.prototype.clampAtBoundaryCircle = function (aXform, zone, circle) {
+    var status = this.collideWCBoundCircle(aXform, zone, circle);
+    if (status !== BoundingBox.eboundCollideStatus.eInside) {
+        var pos = aXform.getPosition();
+        if ((status & BoundingBox.eboundCollideStatus.eCollideTop) !== 0) {
+            pos[1] = (this.getWCCenter())[1] + (zone * this.getWCHeight() / 2) - (circle.getBoundRadius());
+        }
+        if ((status & BoundingBox.eboundCollideStatus.eCollideBottom) !== 0) {
+            pos[1] = (this.getWCCenter())[1] - (zone * this.getWCHeight() / 2) + (circle.getBoundRadius());
+        }
+        if ((status & BoundingBox.eboundCollideStatus.eCollideRight) !== 0) {
+            pos[0] = (this.getWCCenter())[0] + (zone * this.getWCWidth() / 2) - (circle.getBoundRadius());
+        }
+        if ((status & BoundingBox.eboundCollideStatus.eCollideLeft) !== 0) {
+            pos[0] = (this.getWCCenter())[0] - (zone * this.getWCWidth() / 2) + (circle.getBoundRadius());
+        }
+    }
+    return status;
+};

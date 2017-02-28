@@ -21,6 +21,10 @@ var RigidRectangle = function (xf, width, height) {
 };
 gEngine.Core.inheritPrototype(RigidRectangle, RigidShape);
 
+RigidRectangle.prototype.rigidType = function () {
+    return RigidShape.eRigidType.eRigidRectangle;
+};
+
 RigidRectangle.prototype.setVertices = function () {
     var center = this.mXform.getPosition();
     var hw = this.mWidth / 2;
