@@ -5,7 +5,7 @@
 
 /*jslint node: true, vars: true */
 /*global gEngine, Scene, GameObjectset, TextureObject, Camera, vec2,
-  FontRenderable, SpriteRenderable, LineRenderable, Hero, Minion, PrintLine, Circle,
+  FontRenderable, SpriteRenderable, LineRenderable, Hero, Minion, PrintLine, Circle, Rectangle,
   GameObject */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
@@ -28,6 +28,10 @@ function MyGame() {
     this.kBoundDelta = .1;
     Circle.kBoundSize = 4;
     Circle.kMoveDelta = .6;
+    Circle.pointSize = 5;
+    Rectangle.kBoundSize = 4;
+    Rectangle.kMoveDelta = .6;
+    Rectangle.pointSize = 5;
     /**************************************************************************/
     // OBJECTS
     this.mMsg = null;
@@ -63,9 +67,17 @@ MyGame.prototype.initialize = function () {
     var xL = cCen[0] - (cDim[0]/2);
     var yL = cCen[1] - (cDim[1]/2);
     var tX, tY;
+//    for(var i = 0; i < this.kAmountOfPairs*2; i++)
+//    {
+//        var temp = new Circle();
+//        tX = xL + (Math.random() * (cDim[0]) * .9);
+//        tY = yL + (Math.random() * (cDim[1]) * .9);
+//        temp.getXform().setPosition(tX,tY);
+//        this.mObj.addToSet(temp);
+//    }
     for(var i = 0; i < this.kAmountOfPairs*2; i++)
     {
-        var temp = new Circle();
+        var temp = new Rectangle();
         tX = xL + (Math.random() * (cDim[0]) * .9);
         tY = yL + (Math.random() * (cDim[1]) * .9);
         temp.getXform().setPosition(tX,tY);
@@ -117,8 +129,8 @@ MyGame.prototype.update = function () {
             this.mObj.toggleMove();}
     }
     this.mObj.update();
-    this.mObj.detectCollision();
-    this.mObj.boundryCheck(this.mCamera);
+    //this.mObj.detectCollision();
+    //this.mObj.boundryCheck(this.mCamera);
     this.mObj.debug();
 };
 

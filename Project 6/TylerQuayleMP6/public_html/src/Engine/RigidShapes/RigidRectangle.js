@@ -5,7 +5,7 @@
  */
 /*jslint node: true, vars: true, evil: true, bitwise: true */
 "use strict";
-/* global RigidShape */
+/* global RigidShape, vec2, gEngine */
 
 var RigidRectangle = function (xf, width, height) {
     RigidShape.call(this, xf);

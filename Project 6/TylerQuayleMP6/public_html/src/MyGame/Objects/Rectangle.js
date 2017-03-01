@@ -1,24 +1,24 @@
-/* File: Circle.js 
+/* File: Rectangle.js 
  *
- * Creates and initializes the Circle (Cir)
+ * Creates and initializes the Rectangle (Cir)
  * overrides the update function of GameObject to define
  * simple Cir behavior
  */
 
 /*jslint node: true, vars: true */
-/*global vec2, gEngine: false, GameObject: false, RigidCircleRenderable, LineRenderable,SpriteRenderable: false */
+/*global vec2, gEngine: false, GameObject: false, RigidRectangleRenderable, LineRenderable,SpriteRenderable: false */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
-//Circle.kMoveDelta = 20;
-//Circle.kRotateDelta = 0.01;
-//Circle.kRotateLimit = 1.0; // Rad
+//Rectangle.kMoveDelta = 20;
+//Rectangle.kRotateDelta = 0.01;
+//Rectangle.kRotateLimit = 1.0; // Rad
 
 
-function Circle() {
+function Rectangle() {
     /**************************************************************************/
     // VARIABLES
-    this.kDelta = Circle.kMoveDelta;
+    this.kDelta = Rectangle.kMoveDelta;
     this.kTemp = null;
     /**************************************************************************/
     // COLLISION LINE VARIABLES
@@ -31,32 +31,32 @@ function Circle() {
     this.kControl = false;
     this.kCollide = false;
     
-    this.mCir = new LineRenderable();
-    this.mCir.getXform().setPosition(35, 20);
-    this.mCir.getXform().setSize(9, 12);
-    GameObject.call(this, this.mCir);
+    this.mRec = new LineRenderable();
+    this.mRec.getXform().setPosition(35, 20);
+    this.mRec.getXform().setSize(9, 12);
+    GameObject.call(this, this.mRec);
     
-    var r = new RigidCircle(this.getXform(), Circle.kBoundSize);
-    var vx = Circle.kMoveDelta * (Math.random() - .5);
-    var vy = Circle.kMoveDelta * (Math.random() - .5);
-    this.kVel = [vx, vy];
+    var r = new RigidRectangle(this.getXform(), 9,12);
+//    var vx = Rectangle.kMoveDelta * (Math.random() - .5);
+//    var vy = Rectangle.kMoveDelta * (Math.random() - .5);
+//    this.kVel = [vx, vy];
     r.setVelocity(0, 0);
     
-    this.getXform().setRotationInRad((Math.random()-0.5 * Circle.kRotateLimit));
+    //this.getXform().setRotationInRad((Math.random()-0.5 * Rectangle.kRotateLimit));
     
     this.setRigidBody(r);
 }
-gEngine.Core.inheritPrototype(Circle, GameObject);
+gEngine.Core.inheritPrototype(Rectangle, GameObject);
 
-Circle.prototype.draw = function(mCam){
+Rectangle.prototype.draw = function(mCam){
     this.getRigidBody().draw(mCam);
-    if(this.kColLines.length > 0)
-        for(var i = 0; i < this.kColLines.length; i++){
-            this.kColLines[i].draw(mCam);
-            this.kColPoint[i].draw(mCam);}
+//    if(this.kColLines.length > 0)
+//        for(var i = 0; i < this.kColLines.length; i++){
+//            this.kColLines[i].draw(mCam);
+//            this.kColPoint[i].draw(mCam);}
 };
 
-Circle.prototype.update = function () {
+Rectangle.prototype.update = function () {
     GameObject.prototype.update.call(this);
     // control by WASD
     if(this.kControl)
@@ -80,7 +80,7 @@ Circle.prototype.update = function () {
 /******************************************************************************/
 // WRITE DESC
 /******************************************************************************/
-Circle.prototype.reboundWalls = function(status)
+Rectangle.prototype.reboundWalls = function(status)
 {    
     if(status === 1 || status === 2){       // LEFT-RIGHT COLLISION
         this.getRigidBody().flipXVelocity();}
@@ -93,7 +93,7 @@ Circle.prototype.reboundWalls = function(status)
 /******************************************************************************/
 // WRITE DESC
 /******************************************************************************/
-Circle.prototype.toggleVelocity = function()
+Rectangle.prototype.toggleVelocity = function()
 {
     var r = this.getRigidBody().getVelocity();
     if(r[0] === 0 && r[1] === 0)
@@ -105,28 +105,28 @@ Circle.prototype.toggleVelocity = function()
 /******************************************************************************/
 // WRITE DESC
 /******************************************************************************/
-Circle.prototype.control = function(){this.kControl = true;
+Rectangle.prototype.control = function(){this.kControl = true;
     this.getRigidBody().setColor(0,1,0);};
 
 /******************************************************************************/
 // WRITE DESC
 /******************************************************************************/
-Circle.prototype.unControl = function(){this.kControl = false;
+Rectangle.prototype.unControl = function(){this.kControl = false;
     this.getRigidBody().setColor(1,1,1);};
 
 
 /******************************************************************************/
 // Toggles and get methods. Used to get information or set statuses
 /******************************************************************************/
-Circle.prototype.isCollided = function(){this.kCollide = true;};
-Circle.prototype.notCollided = function(){this.kCollide = false; };
-Circle.prototype.getPosition = function() {return this.mCir.getXform().getPosition();};
-Circle.prototype.getID = function() {return this.kID;};
+Rectangle.prototype.isCollided = function(){this.kCollide = true;};
+Rectangle.prototype.notCollided = function(){this.kCollide = false; };
+Rectangle.prototype.getPosition = function() {return this.mRec.getXform().getPosition();};
+Rectangle.prototype.getID = function() {return this.kID;};
 
 /******************************************************************************/
 // WRITE DESC
 /******************************************************************************/
-Circle.prototype.updateLineRecords = function(count)
+Rectangle.prototype.updateLineRecords = function(count)
 {
     this.kColLineCount = count;
     this.kColLines = [];
@@ -144,9 +144,9 @@ Circle.prototype.updateLineRecords = function(count)
 // Return the HTML code with the information about this circle. The code for 
 // each row is configured in GameSetObject
 /******************************************************************************/
-Circle.prototype.getColInfo = function(i)
+Rectangle.prototype.getColInfo = function(i)
 {
-    var xf = this.mCir.getXform();
+    var xf = this.mRec.getXform();
     var msg = "<td>"+ this.kID + "</td>";
     if(this.kCollide)
         msg += "<td bgcolor='#FF0000'>" + this.kCollide + "</td>";
@@ -161,7 +161,7 @@ Circle.prototype.getColInfo = function(i)
 /******************************************************************************/
 // WRITE DESC
 /******************************************************************************/
-Circle.prototype.addLine = function(other)
+Rectangle.prototype.addLine = function(other)
 {
     if(!other.getLineStatusAt(this.kID))
     {
@@ -196,7 +196,7 @@ Circle.prototype.addLine = function(other)
 /******************************************************************************/
 // Clear the line corresponding with the ID of the other circle.
 /******************************************************************************/
-Circle.prototype.clearLine = function(other)
+Rectangle.prototype.clearLine = function(other)
 {
     this.kColLines[other.getID()].setShowLine(false);
     this.kColPoint[other.getID()].setDrawVertices(false);
@@ -207,7 +207,7 @@ Circle.prototype.clearLine = function(other)
 // to see if it's currently being shown, if it is, add 1 else skip it. One thing
 // to note is that the ID corresponding to itself is always false.
 /******************************************************************************/
-Circle.prototype.totalCollisions = function()
+Rectangle.prototype.totalCollisions = function()
 {
     var temp = 0;
     for(var i = 0; i < this.kColLineCount; i++)
@@ -221,7 +221,7 @@ Circle.prototype.totalCollisions = function()
 /******************************************************************************/
 // Clear the line corresponding with the ID of the other circle.
 /******************************************************************************/
-Circle.prototype.getLineStatusAt = function(i)
+Rectangle.prototype.getLineStatusAt = function(i)
 {
     return this.kColLines[i].getShowLine();
 };

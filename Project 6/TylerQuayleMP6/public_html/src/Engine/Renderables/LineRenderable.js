@@ -20,7 +20,6 @@ function LineRenderable(x1, y1, x2, y2) {
     this.mPointSize = 1;
     this.mDrawVertices = false;
     this.mShowLine = true;
-
     this.mP1 = vec2.fromValues(0, 0);
     this.mP2 = vec2.fromValues(0, 0);
 
@@ -52,9 +51,9 @@ LineRenderable.prototype.draw = function (aCamera) {
     if (this.mShowLine) {
         gl.drawArrays(gl.LINE_STRIP, 0, 2);
     }
-//    if (!this.mShowLine || this.mdrawVertices) {
-//        gl.drawArrays(gl.POINTS, 0, 2);
-//    }
+    if (this.mDrawVertices) {
+        gl.drawArrays(gl.POINTS, 0, 2);
+    }
 };
 
 LineRenderable.prototype.setDrawVertices = function (s) { this.mDrawVertices = s; };
@@ -76,6 +75,10 @@ LineRenderable.prototype.setSecondVertex = function (x, y) {
     this.mP2[0] = x;
     this.mP2[1] = y;
 };
+
+//LineRenderable.prototype.setColor = function (r, g, b) {
+//    Renderable.prototype.setColor.call(this, [r, g, b, 1]);
+//};
 
 //--- end of Public Methods
 //</editor-fold>
