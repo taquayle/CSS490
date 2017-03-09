@@ -14,7 +14,7 @@ gEngine.GameLoop = (function () {
     var kFPS = 60;          // Frames per second
     var kFrameTime = 1 / kFPS;
     var kMPF = 1000 / kFPS; // Milliseconds per frame.
-
+    var time = 20;
     // Variables for timing gameloop.
     var mPreviousTime;
     var mLagTime;
@@ -46,6 +46,11 @@ gEngine.GameLoop = (function () {
                 this.update();      // call Scene.update()
                 mLagTime -= kMPF;
             }
+            time = time -1;
+            if(time <= 0){
+                
+                document.getElementById("FPS").innerHTML = Math.round(1000/mElapsedTime);
+                time = 20;}
             // Step D: now let's draw
             this.draw();    // Call Scene.draw()
         } else {
