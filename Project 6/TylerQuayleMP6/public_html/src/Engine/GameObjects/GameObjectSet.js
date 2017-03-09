@@ -4,7 +4,7 @@
  */
 
 /*jslint node: true, vars: true */
-/*global  */
+/*global CollisionInfo */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -14,6 +14,7 @@ function GameObjectSet() {
     this.mSet = [];
     this.kPri = 0;              // The currently controled object
     this.kCollisionRecord = []; // Keeps track of which objects have collided
+    this.kCollisions = [];
 }
 
 GameObjectSet.prototype.size = function () { return this.mSet.length; };
@@ -149,6 +150,7 @@ GameObjectSet.prototype.boundryCheck = function(camera)
 GameObjectSet.prototype.detectCollision = function () {
     this.kCollisionRecord.fill(false);  // Reset the collision record
     var curObj, checkObj;               // Variables for the objects 
+    this.kCollisions = [];
     for (var i = 0; i < this.mSet.length; i++)
     {
         curObj = this.mSet[i].getRigidBody();
@@ -157,6 +159,10 @@ GameObjectSet.prototype.detectCollision = function () {
             checkObj = this.mSet[j].getRigidBody();
             if(i !== j) // Skip checking itself
             {
+//                var t = curObj.collided(checkObj);
+//                if(t.getDepth() > 0){
+//                    this.kCollisions.push(t);
+//                }
                 if(curObj.collided(checkObj)) // Check for collision
                 {
                     this.mSet[i].addLine(this.mSet[j]); // Draw the line
@@ -172,4 +178,22 @@ GameObjectSet.prototype.detectCollision = function () {
     }
 };
 
-
+GameObjectSet.prototype.drawCollisions = function(aCamera)
+{
+//    
+//    if(this.kCollisions.length > 1)
+//    {
+//        for(var i = 0; i < this.kCollisions.length; i++)
+//        {
+//            var t = this.kCollisions[i];
+//            var temp = [0,0];
+//            vec2.inverse(temp, [t.getDepth(), t.getDepth()]);
+//            document.getElementById("D2").innerHTML = temp;
+//            var line = new LineRenderable();
+//            line.setFirstVertex(t.getStart()[0], t.getStart()[1]);
+//            line.setSecondVertex(t.getStart()[0]+temp[0],t.getStart()[1]+ temp[1]);
+//            line.draw(aCamera);
+//            //ar point = new LineRenderable();
+//        }
+//    };
+};

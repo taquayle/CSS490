@@ -40,7 +40,7 @@ function Rectangle() {
 //    var vx = Rectangle.kMoveDelta * (Math.random() - .5);
 //    var vy = Rectangle.kMoveDelta * (Math.random() - .5);
 //    this.kVel = [vx, vy];
-    r.setVelocity(0, 0);
+    //r.setVelocity(0, 0);
     
     //this.getXform().setRotationInRad((Math.random()-0.5 * Rectangle.kRotateLimit));
     
@@ -133,9 +133,10 @@ Rectangle.prototype.updateLineRecords = function(count)
     this.kColPoint = [];
     for(var i = 0; i < count; i++){
         this.kColLines.push(new LineRenderable());
+        this.kColLines[i].setShowLine(false);
         this.kColPoint.push(new LineRenderable());
+        this.kColPoint[i].setDrawVertices(false);
         this.kColPoint[i].setPointSize(5);}
-        //this.kColLines[i].setColor(1,0,1);}
     this.kColLines[this.kID].setShowLine(false);
     this.kColLines[this.kID].setDrawVertices(false);
 };

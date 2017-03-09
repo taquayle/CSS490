@@ -37,8 +37,8 @@ function Circle() {
     GameObject.call(this, this.mCir);
     
     var r = new RigidCircle(this.getXform(), Circle.kBoundSize);
-    var vx = Circle.kMoveDelta * (Math.random() - .5);
-    var vy = Circle.kMoveDelta * (Math.random() - .5);
+    var vx = Circle.kMoveRandomDelta * (Math.random());
+    var vy = Circle.kMoveRandomDelta * (Math.random());
     this.kVel = [vx, vy];
     r.setVelocity(0, 0);
     
@@ -133,6 +133,7 @@ Circle.prototype.updateLineRecords = function(count)
     this.kColPoint = [];
     for(var i = 0; i < count; i++){
         this.kColLines.push(new LineRenderable());
+        this.kColLines[i].setShowLine(false);
         this.kColPoint.push(new LineRenderable());
         this.kColPoint[i].setPointSize(5);}
         //this.kColLines[i].setColor(1,0,1);}

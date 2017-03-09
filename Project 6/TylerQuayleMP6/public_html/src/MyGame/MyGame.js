@@ -23,11 +23,12 @@ function MyGame() {
     this.kWorldScale = 10;           // 1/this scale. Higher number WC = less
     /**************************************************************************/
     // VARIABLES
-    this.kAmountOfPairs = 2;
+    this.kAmountOfPairs = 10;
     this.kCurControl = 0;
     this.kBoundDelta = .1;
     Circle.kBoundSize = 4;
     Circle.kMoveDelta = .6;
+    Circle.kMoveRandomDelta = 10;
     Circle.pointSize = 5;
     Rectangle.kBoundSize = 4;
     Rectangle.kMoveDelta = .6;
@@ -35,6 +36,8 @@ function MyGame() {
     /**************************************************************************/
     // OBJECTS
     this.mMsg = null;
+    this.mMsg2 = null;
+    this.mMsg3 = null;
     this.mObj = new GameObjectSet();
     this.mAllObjs = null;
     this.mHero = null;
@@ -67,24 +70,27 @@ MyGame.prototype.initialize = function () {
     var xL = cCen[0] - (cDim[0]/2);
     var yL = cCen[1] - (cDim[1]/2);
     var tX, tY;
-//    for(var i = 0; i < this.kAmountOfPairs*2; i++)
-//    {
-//        var temp = new Circle();
-//        tX = xL + (Math.random() * (cDim[0]) * .9);
-//        tY = yL + (Math.random() * (cDim[1]) * .9);
-//        temp.getXform().setPosition(tX,tY);
-//        this.mObj.addToSet(temp);
-//    }
     for(var i = 0; i < this.kAmountOfPairs*2; i++)
     {
-        var temp = new Rectangle();
+        var temp = new Circle();
         tX = xL + (Math.random() * (cDim[0]) * .9);
         tY = yL + (Math.random() * (cDim[1]) * .9);
         temp.getXform().setPosition(tX,tY);
         this.mObj.addToSet(temp);
     }
+    // RECTANGLES/CURRENTLY NOT WORKING
+//    for(var i = 0; i < this.kAmountOfPairs*2; i++)
+//    {
+//        var temp = new Rectangle();
+//        tX = xL + (Math.random() * (cDim[0]) * .9);
+//        tY = yL + (Math.random() * (cDim[1]) * .9);
+//        temp.getXform().setPosition(tX,tY);
+//        this.mObj.addToSet(temp);
+//    }
     this.mObj.switchControl(0);
     this.mMsg = new PrintLine(this.mCamera, 2, 1, "");
+    this.mMsg2 = new PrintLine(this.mCamera, 2, 2, "SHIFT+(UP/DOWN): Inc/Dec ALL Radius");
+    this.mMsg3 = new PrintLine(this.mCamera, 2, 3, "SPACE: Toggle Auto Move | SHIFT+SPACE: Toggle All");
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -96,6 +102,9 @@ MyGame.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     this.mObj.draw(this.mCamera);
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    this.mMsg2.draw(this.mCamera);   // only draw status in the main camera
+    this.mMsg3.draw(this.mCamera);   // only draw status in the main camera
+    this.mObj.drawCollisions(this.mCamera);
 };
 
 
@@ -128,10 +137,14 @@ MyGame.prototype.update = function () {
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
             this.mObj.toggleMove();}
     }
+    
     this.mObj.update();
-    //this.mObj.detectCollision();
-    //this.mObj.boundryCheck(this.mCamera);
+    this.mObj.detectCollision();
+    this.mObj.boundryCheck(this.mCamera);
     this.mObj.debug();
+    var rad = this.mObj.getObjectAt(this.mObj.kPri);
+    var msg = "Num: " + this.kAmountOfPairs*2 + " Current: " + this.mObj.kPri + " Rad " + rad.getRigidBody().getBoundRadius();
+    this.mMsg.setText(msg);
 };
 
 MyGame.prototype.setCanvasSize = function(pW, pH)

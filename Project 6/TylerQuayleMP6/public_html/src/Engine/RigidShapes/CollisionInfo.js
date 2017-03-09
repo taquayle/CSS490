@@ -6,7 +6,7 @@
 
 /*jslint node: true, vars: true, evil: true, bitwise: true */
 "use strict";
-
+/*global vec2*/
 /**
  * Default Constructor
  * @memberOf CollisionInfo
@@ -14,9 +14,9 @@
  */
 function CollisionInfo() {
     this.mDepth = 0;
-    this.mNormal = new Vec2(0, 0);
-    this.mStart = new Vec2(0, 0);
-    this.mEnd = new Vec2(0, 0);
+    this.mNormal =[0,0];// new Vec2(0, 0)];
+    this.mStart = [0,0];//new Vec2(0, 0);
+    this.mEnd = [0,0];//new Vec2(0, 0);
 }
 
 /**
@@ -48,6 +48,13 @@ CollisionInfo.prototype.getDepth = function () {
     return this.mDepth;
 };
 
+CollisionInfo.prototype.getStart = function () {
+    return this.mStart;
+};
+
+CollisionInfo.prototype.getEnd = function () {
+    return this.mEnd;
+};
 /**
  * Return the depth of the CollisionInfo
  * @memberOf CollisionInfo
@@ -69,7 +76,10 @@ CollisionInfo.prototype.setInfo = function (d, n, s) {
     this.mDepth = d;
     this.mNormal = n;
     this.mStart = s;
-    this.mEnd = s.add(n.scale(d));
+    this.mEnd = [0,0];
+    var temp = [0,0];
+    vec2.scale(temp, n, d);
+    vec2.add(this.mEnd, s, temp);
 };
 
 /**
@@ -78,7 +88,7 @@ CollisionInfo.prototype.setInfo = function (d, n, s) {
  * @returns {void}
  */
 CollisionInfo.prototype.changeDir = function () {
-    this.mNormal = this.mNormal.scale(-1);
+    this.mNormal = vec2.scale(this.mNormal, -1);
     var n = this.mStart;
     this.mStart = this.mEnd;
     this.mEnd = n;

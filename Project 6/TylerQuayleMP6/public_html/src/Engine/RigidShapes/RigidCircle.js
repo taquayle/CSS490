@@ -31,8 +31,8 @@ RigidCircle.prototype.draw = function (aCamera) {
     RigidShape.prototype.draw.call(this, aCamera);
     
     // kNumSides forms the circle.
-    //this.mLine.setColor([0, 0, 0, 1]);
-    //this.drawCircle(aCamera, this.mRadius);
+    this.mLine.setColor([0, 0, 0, 1]);
+    this.drawCircle(aCamera, this.mRadius);
     
     var p = this.mXform.getPosition();
     var u = [p[0], p[1]+this.mBoundRadius];
