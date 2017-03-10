@@ -2,7 +2,7 @@
  * File: EngineCore_Loop.js 
  * Implements the game loop functionality of gEngine
  */
-/*jslint node: true, vars: true */
+/*jslint node: true, vars: true, white: true */
 /*global gEngine: false, requestAnimationFrame: false */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
@@ -12,9 +12,11 @@ var gEngine = gEngine || { };
 
 gEngine.GameLoop = (function () {
     var kFPS = 60;          // Frames per second
+    var kResetTime = kFPS/2;
+    var kUpdateFPSTimer = kResetTime;
     var kFrameTime = 1 / kFPS;
-    var kMPF = 1000 / kFPS; // Milliseconds per frame.
-    var time = 20;
+    var kMPF = 1000 * kFrameTime; // Milliseconds per frame.
+
     // Variables for timing gameloop.
     var mPreviousTime;
     var mLagTime;
@@ -46,11 +48,12 @@ gEngine.GameLoop = (function () {
                 this.update();      // call Scene.update()
                 mLagTime -= kMPF;
             }
-            time = time -1;
-            if(time <= 0){
-                
+            kUpdateFPSTimer -= 1;
+            if(kUpdateFPSTimer <= 0)
+            {
                 document.getElementById("FPS").innerHTML = Math.round(1000/mElapsedTime);
-                time = 20;}
+                kUpdateFPSTimer = kResetTime;
+            }
             // Step D: now let's draw
             this.draw();    // Call Scene.draw()
         } else {
@@ -89,7 +92,7 @@ gEngine.GameLoop = (function () {
     var getUpdateIntervalInSeconds = function () {
         return kFrameTime;
     };
-
+    
     var mPublic = {
         start: start,
         stop: stop,

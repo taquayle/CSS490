@@ -24,8 +24,10 @@ function Platform(spriteTexture, x, y, rot) {
     GameObject.call(this, this.mPlat);
     
     var r = new RigidRectangle(this.getXform(), 30, 3.75);
-    r.toggleDrawBound();
-    this.setRigidBody(r);
+    r.setMass(0);  // ensures no movements!
+    r.setDrawBounds(true);
+    r.setColor([0, 0, 0, 1]);
+    this.setPhysicsComponent(r);
     //this.toggleDrawRenderable();
 }
 gEngine.Core.inheritPrototype(Platform, WASDObj);

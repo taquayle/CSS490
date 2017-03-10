@@ -2,7 +2,7 @@
  * File: EngineCore.js 
  * The first iteration of what the core of our game engine would look like.
  */
-/*jslint node: true, vars: true, evil: true */
+/*jslint node: true, vars: true, evil: true, bitwise: true */
 /*global document */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
@@ -23,7 +23,8 @@ gEngine.Core = (function () {
 
         // Get the standard or experimental webgl and binds to the Canvas area
         // store the results to the instance variable mGL
-        mGL = canvas.getContext("webgl", {alpha: false}) || canvas.getContext("experimental-webgl", {alpha: false});
+        mGL = canvas.getContext("webgl", {alpha: false, depth: true, stencil: true}) ||
+              canvas.getContext("experimental-webgl", {alpha: false, depth: true, stencil: true});
 
         // Allows transperency with textures.
         mGL.blendFunc(mGL.SRC_ALPHA, mGL.ONE_MINUS_SRC_ALPHA);
@@ -31,6 +32,10 @@ gEngine.Core = (function () {
 
         // Set images to flip y axis to match the texture coordinate space.
         mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
+
+        // make sure depth testing is enabled
+        mGL.enable(mGL.DEPTH_TEST);
+        mGL.depthFunc(mGL.LEQUAL);
 
         if (mGL === null) {
             document.write("<br><b>WebGL is not supported!</b>");
@@ -56,6 +61,7 @@ gEngine.Core = (function () {
         gEngine.VertexBuffer.initialize();
         gEngine.Input.initialize(htmlCanvasID);
         gEngine.AudioClips.initAudioContext();
+        gEngine.Physics.initialize();
 
         // Inits DefaultResources, when done, invoke the anonymous function to call startScene(myGame).
         gEngine.DefaultResources.initialize(function () { startScene(myGame); });
@@ -63,8 +69,9 @@ gEngine.Core = (function () {
 
     // Clears the draw area and draws one square
     var clearCanvas = function (color) {
-        mGL.clearColor(color[0], color[1], color[2], color[3]);  // set the color to be cleared
-        mGL.clear(mGL.COLOR_BUFFER_BIT);      // clear to the color previously set
+        mGL.clearColor(color[0], color[1], color[2], color[3]);     // set the color to be cleared
+        mGL.clear(mGL.COLOR_BUFFER_BIT | mGL.STENCIL_BUFFER_BIT | mGL.DEPTH_BUFFER_BIT);
+                    // clear to the color, stencil bit, and depth buffer bits
     };
 
     var inheritPrototype = function (subClass, superClass) {

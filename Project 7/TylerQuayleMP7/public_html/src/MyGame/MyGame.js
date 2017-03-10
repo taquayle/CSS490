@@ -24,8 +24,8 @@ function MyGame() {
 
     this.mMsg = null;
 
-    this.mAllObjs = null;
-    this.mPlats = null;
+    this.mObjs = null;
+    this.mBorder = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -55,9 +55,11 @@ MyGame.prototype.initialize = function () {
             // sets the background to gray
     var msg = "hello world \nhello computer";
     this.mMsg = new PrintHandler(this.mCamera, msg);
-    this.mPlats = new GameObjectSet();
+    this.mBorder = new GameObjectSet();
     this.buildBorder();
-
+    this.mObjs = new GameObjectSet();
+    this.mObjs.addToSet(new Hero(this.kMinionSprite, 50,40));
+    this.mObjs.addToSet(new Hero(this.kMinionSprite, 40,40));
 };
 
 MyGame.prototype.buildBorder = function()
@@ -87,7 +89,7 @@ MyGame.prototype.oneRow = function(x, y, pW, k, r)
     for(var i = 0; i < k; i++)
     {
         var temp = new Platform(this.kPlat, (x+pW+(pW*(i*2))), y, r);
-        this.mPlats.addToSet(temp);
+        this.mBorder.addToSet(temp);
     }
 };
 
@@ -109,7 +111,7 @@ MyGame.prototype.oneCol = function(x, y, pH, k)
     for(var i = 0; i < k; i++)
     {
         var temp = new Pillar(this.kWall, x,(y+pH+(pH*(i*2))));
-        this.mPlats.addToSet(temp);
+        this.mBorder.addToSet(temp);
     }
 };
 
@@ -121,7 +123,9 @@ MyGame.prototype.draw = function () {
 
     this.mCamera.setupViewProjection();
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
-    this.mPlats.draw(this.mCamera);
+    this.mBorder.draw(this.mCamera);
+    this.mObjs.draw(this.mCamera);
+    
     // for now draw these ...
 //    for (var i = 0; i<this.mCollisionInfos.length; i++) 
 //        this.mCollisionInfos[i].draw(this.mCamera);
@@ -132,5 +136,8 @@ MyGame.prototype.draw = function () {
 
 MyGame.prototype.update = function () {
         this.mMsg.update();
+        this.mObjs.update();
+        gEngine.Physics.processSetSet(this.mObjs, this.mBorder);
+        gEngine.Physics.processSetSet(this.mObjs, this.mObjs);
     //gEngine.Physics.processCollision(this.mAllObjs, this.mCollisionInfos);
 };

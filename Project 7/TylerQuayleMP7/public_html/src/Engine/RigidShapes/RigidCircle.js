@@ -1,52 +1,56 @@
 /* 
- * File:RigidCircle.js
- *      define a circle
- *     
+ * File: RigidCircle.js
+ * Defines a rigid circle
  */
-/*jslint node: true, vars: true, evil: true, bitwise: true */
-"use strict";
-/* global RigidShape */
 
-var RigidCircle = function (xf, radius) {
-    RigidShape.call(this, xf);
-    this.mType = "RigidCircle";
-    this.mRadius = radius;
-    this.mBoundRadius = radius;
-};
+/*jslint node: true, vars:true , white: true*/
+/*global gEngine, RigidShape, vec2, LineRenderable */
+/* find out more about jslint: http://www.jslint.com/help.html */
+"use strict";
+
+function RigidCircle(xform, r) {
+    RigidShape.call(this, xform);
+    this.kNumSides = 16;
+    this.mSides = new LineRenderable();
+    this.mRadius = r;
+}
 gEngine.Core.inheritPrototype(RigidCircle, RigidShape);
 
-RigidCircle.prototype.incShapeSizeBy= function (dt) {
-    this.mRadius += dt;
+RigidCircle.prototype.rigidType = function () {
+    return RigidShape.eRigidType.eRigidCircle;
 };
-
-RigidCircle.prototype.travel = function (dt) {
-    // linear motion
-    var p = this.mXform.getPosition();
-    vec2.scaleAndAdd(p, p, this.mVelocity, dt);
-    
-    return this;
+RigidCircle.prototype.getRadius = function () {
+    return this.mRadius;
 };
 
 RigidCircle.prototype.draw = function (aCamera) {
+    if (!this.mDrawBounds) {
+        return;
+    }
     RigidShape.prototype.draw.call(this, aCamera);
     
     // kNumSides forms the circle.
-    this.mLine.setColor([0, 0, 0, 1]);
-    this.drawCircle(aCamera, this.mRadius);
-    
-    var p = this.mXform.getPosition();
-    var u = [p[0], p[1]+this.mBoundRadius];
-    // angular motion
-    vec2.rotateWRT(u, u, this.mXform.getRotationInRad(), p);
-    this.mLine.setColor([1, 1, 1, 1]);
-    this.mLine.setFirstVertex(p[0], p[1]);
-    this.mLine.setSecondVertex(u[0], u[1]);
-    this.mLine.draw(aCamera);
-    
-    if (this.mDrawBounds)
-        this.drawCircle(aCamera, this.mBoundRadius);
+    var pos = this.getPosition();
+    var prevPoint = vec2.clone(pos);
+    var deltaTheta = (Math.PI * 2.0) / this.kNumSides;
+    var theta = deltaTheta;
+    prevPoint[0] += this.mRadius;
+    var i, x, y;
+    for (i = 1; i <= this.kNumSides; i++) {
+        x = pos[0] + this.mRadius * Math.cos(theta);
+        y = pos[1] +  this.mRadius * Math.sin(theta);
+        
+        this.mSides.setFirstVertex(prevPoint[0], prevPoint[1]);
+        this.mSides.setSecondVertex(x, y);
+        this.mSides.draw(aCamera);
+        
+        theta = theta + deltaTheta;
+        prevPoint[0] = x;
+        prevPoint[1] = y;
+    }
 };
 
-RigidCircle.prototype.update = function () {
-    RigidShape.prototype.update.call(this);
+RigidCircle.prototype.setColor = function (color) {
+    RigidShape.prototype.setColor.call(this, color);
+    this.mSides.setColor(color);
 };

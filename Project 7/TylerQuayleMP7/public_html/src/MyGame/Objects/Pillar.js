@@ -22,8 +22,10 @@ function Pillar(spriteTexture, x, y) {
     GameObject.call(this, this.mPlat);
     
     var r = new RigidRectangle(this.getXform(), 3, 12);
-    r.toggleDrawBound();
-    this.setRigidBody(r);
+    r.setMass(0);  // ensures no movements!
+    r.setDrawBounds(true);
+    r.setColor([0, 0, 0, 1]);
+     this.setPhysicsComponent(r);
     //this.toggleDrawRenderable();
 }
 gEngine.Core.inheritPrototype(Pillar, WASDObj);

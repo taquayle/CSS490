@@ -1,50 +1,57 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * File: RigidCircle_Collision.js
+ * Detects RigidCircle collisions
  */
-/*jslint node: true, vars: true, evil: true, bitwise: true */
-"use strict";
-/* global RigidCircle, vec2 */
 
-RigidCircle.prototype.collisionTest = function (otherShape, collisionInfo) {
-    var status = false;
-    if (otherShape.mType === "RigidCircle") {
-        status = this.collideCircCirc(this, otherShape, collisionInfo);
-    } else {
-        status = otherShape.collideRectCirc(this, collisionInfo);
-    }
-    return status;
+/*jslint node: true, vars:true , white: true*/
+/*global RigidShape, RigidCircle, vec2, LineRenderable */
+/* find out more about jslint: http://www.jslint.com/help.html */
+"use strict";
+
+RigidCircle.prototype.containsPos = function(pos) {
+    var dist = vec2.distance(this.getPosition(), pos);
+    return (dist < this.getRadius());
 };
 
-RigidCircle.prototype.collideCircCirc = function (c1, c2, collisionInfo) {
+RigidCircle.prototype.collidedCircCirc = function(c1, c2, collisionInfo) {
     var vFrom1to2 = [0, 0];
-    vec2.subtract(vFrom1to2, c2.getCenter(), c1.getCenter());
-    var rSum = c1.mRadius + c2.mRadius;
-    var dist = vec2.length(vFrom1to2);
-    if (dist > Math.sqrt(rSum * rSum)) {
-        //not overlapping
+    vec2.sub(vFrom1to2, c2.getPosition(), c1.getPosition());
+    var rSum = c1.getRadius() + c2.getRadius();
+    var sqLen = vec2.squaredLength(vFrom1to2);
+    if (sqLen > (rSum * rSum)) {
         return false;
     }
-    if (dist !== 0) {
-        // overlapping bu not same position
-        vec2.normalize(vFrom1to2, vFrom1to2);
-        var vToC2 = [0, 0];
-        vec2.scale(vToC2, vFrom1to2, -c2.mRadius);
-        vec2.add(vToC2, c2.getCenter(), vToC2);
-        collisionInfo.setInfo(rSum - dist, vFrom1to2, vToC2);
-    } else {
-        //same position
-        if (c1.mRadius > c2.mRadius) {
-            var pC1 = c1.getCenter();
-            var ptOnC1 = [pC1[0], pC1[1] + c1.mRadius];
-            collisionInfo.setInfo(rSum, [0, -1], ptOnC1);
-        } else {
-            var pC2 = c2.getCenter();
-            var ptOnC2 = [pC2[0], pC2[1]+c2.mRadius];
-            collisionInfo.setInfo(rSum, new Vec2(0, -1), ptOnC2);
-        }
+    var dist = Math.sqrt(sqLen);
+
+    if (dist !== 0) { // overlapping
+        vec2.scale(vFrom1to2, vFrom1to2, 1/dist);
+        collisionInfo.setNormal(vFrom1to2);
+        collisionInfo.setDepth(rSum - dist);
     }
+    else //same position
+    {
+        collisionInfo.setDepth(rSum / 10);
+        collisionInfo.setNormal([0, 1]);
+    }
+
     return true;
 };
 
+
+RigidCircle.prototype.collided = function(otherShape, collisionInfo) { 
+    var status = false;
+    var n;
+    collisionInfo.setDepth(0);
+    switch (otherShape.rigidType()) {
+        case RigidShape.eRigidType.eRigidCircle:
+            status = this.collidedCircCirc(this, otherShape, collisionInfo);
+            break;
+        case RigidShape.eRigidType.eRigidRectangle:
+            status = this.collidedRectCirc(otherShape, this, collisionInfo);
+            n = collisionInfo.getNormal();
+            n[0] = -n[0];
+            n[1] = -n[1];
+            break;
+    }
+    return status;
+};
