@@ -14,8 +14,8 @@ var gEngine = gEngine || { };
 gEngine.Physics = (function () {
     var mRelaxationCount = 15;                  // number of relaxation iteration
     var mRelaxationOffset = 1/mRelaxationCount; // porportion to apply when scaling friction
-    var mPosCorrectionRate = 0.8;               // percentage of separation to project objects
-    var mSystemtAcceleration = [0, -50];        // system-wide default acceleration
+    var mPosCorrectionRate = 0.1;               // percentage of separation to project objects
+    var mSystemtAcceleration = [0, -20];        // system-wide default acceleration
     
     var mRelaxationLoopCount = 0;               // the current relaxation count
     var mHasOneCollision = false;               // detect the first collision

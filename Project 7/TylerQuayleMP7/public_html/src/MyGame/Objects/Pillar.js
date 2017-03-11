@@ -6,7 +6,7 @@
  */
 
 /*jslint node: true, vars: true */
-/*global gEngine: false, GameObject: false, SpriteRenderable: false, WASDObj */
+/*global gEngine: false, GameObject: false, SpriteRenderable: false, GeneralObj */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -28,7 +28,7 @@ function Pillar(spriteTexture, x, y) {
      this.setPhysicsComponent(r);
     //this.toggleDrawRenderable();
 }
-gEngine.Core.inheritPrototype(Pillar, WASDObj);
+gEngine.Core.inheritPrototype(Pillar, GeneralObj);
 
 Pillar.prototype.update = function () {
     GameObject.prototype.update.call(this);
@@ -36,3 +36,6 @@ Pillar.prototype.update = function () {
 
 Pillar.prototype.getWidth = function(){ var t = this.mPlat.getXform(); return t.getSize()[0];};
 Pillar.prototype.getHeight = function(){ var t = this.mPlat.getXform(); return t.getSize()[1];};
+
+Pillar.prototype.setVisible = function()       {this.setVisibility(true);};
+Pillar.prototype.setInvisible = function()     {this.setVisibility(false);};

@@ -21,11 +21,14 @@ function MyGame() {
     
     // The camera to view the scene
     this.mCamera = null;
-
+    this.mImpulse = true;
     this.mMsg = null;
 
     this.mObjs = null;
     this.mBorder = null;
+    this.mTarget = null;
+    
+    this.mNumOfObj = 30;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -57,9 +60,22 @@ MyGame.prototype.initialize = function () {
     this.mMsg = new PrintHandler(this.mCamera, msg);
     this.mBorder = new GameObjectSet();
     this.buildBorder();
+    this.mBorder.addToSet(new Platform(this.kPlat, 50, 40, 30));
     this.mObjs = new GameObjectSet();
-    this.mObjs.addToSet(new Hero(this.kMinionSprite, 50,40));
-    this.mObjs.addToSet(new Hero(this.kMinionSprite, 40,40));
+    for(var i = 0; i < this.mNumOfObj; i++)
+        this.addObject();
+    this.mObjs.toggleControl(0);
+    this.mTarget = new Target(this.kTarg, 0, 0);
+};
+
+MyGame.prototype.addObject = function()
+{
+    var pX = this.mCamera.getWCWidth();
+    var pY = this.mCamera.getWCHeight();
+//    if(Math.random() >= .5)
+//        this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
+//    else
+        this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
 };
 
 MyGame.prototype.buildBorder = function()
@@ -122,22 +138,26 @@ MyGame.prototype.draw = function () {
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
     this.mCamera.setupViewProjection();
-    this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
     this.mBorder.draw(this.mCamera);
     this.mObjs.draw(this.mCamera);
-    
-    // for now draw these ...
-//    for (var i = 0; i<this.mCollisionInfos.length; i++) 
-//        this.mCollisionInfos[i].draw(this.mCamera);
-//    this.mCollisionInfos = [];
-    
-    
+    this.mTarget.draw(this.mCamera);
 };
 
 MyGame.prototype.update = function () {
-        this.mMsg.update();
-        this.mObjs.update();
-        gEngine.Physics.processSetSet(this.mObjs, this.mBorder);
-        gEngine.Physics.processSetSet(this.mObjs, this.mObjs);
-    //gEngine.Physics.processCollision(this.mAllObjs, this.mCollisionInfos);
+    this.mMsg.update();
+    this.mObjs.update();
+    this.mTarget.update(this.mObjs.returnControlledObj());
+    if(this.mImpulse){
+        gEngine.Physics.processSetSet(this.mObjs, this.mObjs);}
+    gEngine.Physics.processSetSet(this.mObjs, this.mBorder);
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
+        this.mObjs.toggleVisibility();
+        this.mBorder.toggleVisibility();}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) {
+        this.mObjs.toggleControl(1);}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
+        this.mObjs.toggleControl(-1);}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) {
+        this.mImpulse = !this.mImpulse;}
 };

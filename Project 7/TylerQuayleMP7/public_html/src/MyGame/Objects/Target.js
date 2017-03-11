@@ -1,6 +1,6 @@
-/* File: Platform.js 
+/* File: Target.js 
  *
- * Creates and initializes the Platform
+ * Creates and initializes the Target
  * overrides the update function of GameObject to define
  * simple Dye behavior
  */
@@ -11,28 +11,28 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Platform(spriteTexture, x, y, rot) {
+function Target(spriteTexture, x, y) {
     this.kDelta = 0.3;
-    if(rot === "undefined")
-        rot = 0;
+    this.kMimicPos = null;
+    this.kMimicWid = null;
+    this.kMimicHei = null;
     this.mPlat = new SpriteRenderable(spriteTexture);
     this.mPlat.setColor([1, 1, 1, 0]);
     this.mPlat.getXform().setPosition(x, y);
-    this.mPlat.getXform().setSize(30, 3.75);
-    this.mPlat.getXform().setRotationInDegree(rot);
-    this.mPlat.setElementPixelPositions(0, 512, 0, 64);
+    this.mPlat.getXform().setSize(3, 12);
+    this.mPlat.setElementPixelPositions(0, 256, 0, 256);
     GameObject.call(this, this.mPlat);
-    
     var r = new RigidRectangle(this.getXform(), 30, 3.75);
-    r.setMass(0);  // ensures no movements!
-    r.setDrawBounds(true);
-    r.rotateVertices();
-    r.setColor([0, 0, 0, 1]);
+    r.setDrawBounds(false);
     this.setPhysicsComponent(r);
-    //this.toggleDrawRenderable();
 }
-gEngine.Core.inheritPrototype(Platform, GeneralObj);
+gEngine.Core.inheritPrototype(Target, GeneralObj);
 
-Platform.prototype.update = function () {
+Target.prototype.update = function (mControl) {
     GameObject.prototype.update.call(this);
+    this.kMimicPos = mControl.getPos();
+    this.kMimicHei = mControl.getHeight();
+    this.kMimicWid = mControl.getWidth();
+    this.mPlat.getXform().setPosition(this.kMimicPos[0], this.kMimicPos[1]);
+    this.mPlat.getXform().setSize(this.kMimicWid, this.kMimicHei);
 };

@@ -12,6 +12,8 @@
 
 function GameObjectSet() {
     this.mSet = [];
+    this.kPri = 0;
+    this.kVis = false;
 }
 
 GameObjectSet.prototype.size = function () { return this.mSet.length; };
@@ -37,3 +39,27 @@ GameObjectSet.prototype.draw = function (aCamera) {
         this.mSet[i].draw(aCamera);
     }
 };
+
+GameObjectSet.prototype.toggleControl = function (tog) {
+    for (var i = 0; i < this.mSet.length; i++) {
+        this.mSet[i].uncontrol();
+    }
+    this.kPri += tog;
+    if(this.kPri >= this.mSet.length)
+        this.kPri = 0;
+    else if(this.kPri < 0)
+        this.kPri = this.mSet.length-1;
+    this.mSet[this.kPri].control();
+};
+
+GameObjectSet.prototype.toggleVisibility = function () {
+    this.kVis = !this.kVis;
+    if(this.kVis)
+        for (var i = 0; i < this.mSet.length; i++) {
+            this.mSet[i].setVisible();}
+    else
+        for (var i = 0; i < this.mSet.length; i++) {
+            this.mSet[i].setInvisible();}
+};
+
+GameObjectSet.prototype.returnControlledObj = function () {return this.getObjectAt(this.kPri);};

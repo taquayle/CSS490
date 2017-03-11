@@ -28,11 +28,21 @@ function RigidShape(xform) {
     this.mRestitution = 0.8;
     this.mVelocity = vec2.fromValues(0, 0);
     this.mFriction = 0.3;
+    this.mAngularVelocity = 0;
     this.mAcceleration = gEngine.Physics.getSystemtAcceleration();
 }
 
 RigidShape.prototype.rigidType = function () {
     return RigidShape.eRigidType.eRigidAbstract;
+};
+
+
+RigidShape.prototype.travel = function(dt) {};
+
+RigidShape.prototype.update = function () {
+    var dt = gEngine.GameLoop.getUpdateIntervalInSeconds();
+    //s += v*t 
+    this.travel(dt);
 };
 
 RigidShape.prototype.draw = function (aCamera) {
