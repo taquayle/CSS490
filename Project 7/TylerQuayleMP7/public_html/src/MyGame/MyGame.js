@@ -28,7 +28,7 @@ function MyGame() {
     this.mBorder = null;
     this.mTarget = null;
     
-    this.mNumOfObj = 30;
+    this.mNumOfObj = 10;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -70,12 +70,12 @@ MyGame.prototype.initialize = function () {
 
 MyGame.prototype.addObject = function()
 {
-    var pX = this.mCamera.getWCWidth();
-    var pY = this.mCamera.getWCHeight();
+    var pX = this.mCamera.getWCWidth()-20;
+    var pY = this.mCamera.getWCHeight()-20;
 //    if(Math.random() >= .5)
 //        this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
 //    else
-        this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
+        this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
 };
 
 MyGame.prototype.buildBorder = function()
@@ -146,11 +146,13 @@ MyGame.prototype.draw = function () {
 
 MyGame.prototype.update = function () {
     this.mMsg.update();
-    this.mObjs.update();
-    this.mTarget.update(this.mObjs.returnControlledObj());
+
+    //this.mTarget.update(this.mObjs.returnControlledObj());
     if(this.mImpulse){
         gEngine.Physics.processSetSet(this.mObjs, this.mObjs);}
-    gEngine.Physics.processSetSet(this.mObjs, this.mBorder);
+    
+    //gEngine.Physics.processSetSet(this.mObjs, this.mBorder);
+    gEngine.Physics.processSetSet(this.mBorder, this.mObjs);
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mObjs.toggleVisibility();
         this.mBorder.toggleVisibility();}
@@ -160,4 +162,7 @@ MyGame.prototype.update = function () {
         this.mObjs.toggleControl(-1);}
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) {
         this.mImpulse = !this.mImpulse;}
+    this.mObjs.displayInfo();
+    this.mObjs.update();
+    //this.mBorder.update();
 };

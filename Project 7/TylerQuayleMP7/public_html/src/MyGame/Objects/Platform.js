@@ -26,8 +26,9 @@ function Platform(spriteTexture, x, y, rot) {
     var r = new RigidRectangle(this.getXform(), 30, 3.75);
     r.setMass(0);  // ensures no movements!
     r.setDrawBounds(true);
-    r.rotateVertices();
+    r.rotate(this.mPlat.getXform().getRotationInRad());
     r.setColor([0, 0, 0, 1]);
+    r.setRestitution(0.1);
     this.setPhysicsComponent(r);
     //this.toggleDrawRenderable();
 }

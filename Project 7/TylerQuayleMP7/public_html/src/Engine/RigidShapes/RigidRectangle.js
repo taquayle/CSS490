@@ -19,21 +19,12 @@ function RigidRectangle(xform, w, h) {
     this.mFaceNormal = [];
     this.setVertices();
     this.computeFaceNormals();
+    this.updateInertia();
 }
 gEngine.Core.inheritPrototype(RigidRectangle, RigidShape);
 
 
-RigidRectangle.prototype.travel = function (dt) {
-    var p = this.mXform.getPosition();
-    // Linear
-    vec2.scaleAndAdd(p, p, this.mVelocity, dt);
-    this.setVertices();
-    
-    // angular motion
-    this.rotateVertices();
-    
-    return this;
-};
+
 
 RigidRectangle.prototype.setVertices = function () {
     var center = this.mXform.getPosition();
@@ -58,15 +49,6 @@ RigidRectangle.prototype.computeFaceNormals = function () {
     }
 };
 
-RigidRectangle.prototype.rotateVertices = function () {
-    var center = this.mXform.getPosition();
-    var r = this.mXform.getRotationInRad();
-    for (var i = 0; i<4; i++) {
-        vec2.rotateWRT(this.mVertex[i], this.mVertex[i], r, center);
-    }
-    this.computeFaceNormals();
-};
-
 
 RigidRectangle.prototype.rigidType = function () {
     return RigidShape.eRigidType.eRigidRectangle;
@@ -80,9 +62,6 @@ RigidRectangle.prototype.drawAnEdge = function (i1, i2, aCamera) {
 };
 
 RigidRectangle.prototype.draw = function (aCamera) {
-    this.setVertices();
-    this.rotateVertices();
-    RigidShape.prototype.draw.call(this, aCamera);
     var i = 0;
     if(this.mDrawBounds)
         for (i=0; i<4; i++) {
@@ -98,6 +77,60 @@ RigidRectangle.prototype.setColor = function (color) {
     this.mSides.setColor(color);
 };
 
+
+RigidRectangle.prototype.updateInertia = function () {
+    // Expect this.mInvMass to be already inverted!
+    if (this.mInvMass === 0) {
+        this.mInertia = 0;
+    } else {
+        //inertia=mass*width^2+height^2
+        this.mInertia = (1 / this.mInvMass) * (this.mWidth * this.mWidth + this.mHeight * this.mHeight) / 12;
+        this.mInertia = 1 / this.mInertia;
+    }
+};
+
 RigidRectangle.prototype.update = function () {
+
     RigidShape.prototype.update.call(this);
+    this.setVertices();
+    this.rotate(0);
+};
+
+RigidRectangle.prototype.rotate = function (angle) {
+    
+    this.mAngle += angle;
+    var center = this.mXform.getPosition();
+    this.mXform.setRotationInRad(this.mAngle);
+    var r = this.mXform.getRotationInRad();
+    for (var i = 0; i<4; i++) {
+        vec2.rotateWRT(this.mVertex[i], this.mVertex[i], r, center);
+    }
+
+
+    //this.mFaceNormal[0] = this.mVertex[1].subtract(this.mVertex[2]);
+    vec2.subtract(this.mFaceNormal[0], this.mVertex[1], this.mVertex[2]);
+    vec2.normalize(this.mFaceNormal[0], this.mFaceNormal[0]);
+    
+    //this.mFaceNormal[1] = this.mVertex[2].subtract(this.mVertex[3]);
+    vec2.subtract(this.mFaceNormal[1], this.mVertex[2], this.mVertex[3]);
+    vec2.normalize(this.mFaceNormal[1], this.mFaceNormal[1]);
+    
+    //this.mFaceNormal[2] = this.mVertex[3].subtract(this.mVertex[0]);
+    vec2.subtract(this.mFaceNormal[2], this.mVertex[3], this.mVertex[0]);
+    vec2.normalize(this.mFaceNormal[2], this.mFaceNormal[2]);
+    
+    //this.mFaceNormal[3] = this.mVertex[0].subtract(this.mVertex[1]);
+    vec2.subtract(this.mFaceNormal[3], this.mVertex[0], this.mVertex[1]);
+    vec2.normalize(this.mFaceNormal[3], this.mFaceNormal[3]);
+    return this;
+};
+
+RigidRectangle.prototype.move = function (v) {
+    var i;
+    for (i = 0; i < this.mVertex.length; i++) {
+        vec2.add(this.mVertex[i], this.mVertex[i], v);
+    }
+    var pos = this.getPosition();
+    vec2.add(pos, pos, v);
+    return this;
 };

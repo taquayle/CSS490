@@ -41,3 +41,16 @@ GeneralObj.prototype.getWidth = function(){ return this.getXform().getSize()[0];
 GeneralObj.prototype.getHeight = function(){ return this.getXform().getSize()[1];};
 
 GeneralObj.prototype.getPos = function(){ return this.getXform().getPosition();};
+
+GeneralObj.prototype.getInfo = function(i, color){
+    var vel = this.getPhysicsComponent(); 
+    var info = "<tr bgcolor='#" + color + "'>";
+    info += "<td>" + i + "</td>";
+    info += "<td>" + Math.round(this.getPos()[0]) + ", "+ Math.round(this.getPos()[1]) + "</td>";
+    info += "<td>" + Math.round(vel.getVelocity()[0]) + ", "+ Math.round(vel.getVelocity()[1]) + "</td>";
+    info += "<td>" + vel.getAngularVelocity().toPrecision(3) + "</td>";
+    info += "<td>" + vel.getInertia().toPrecision(3) + "</td>";
+    info += "<td>" + vel.getAngle().toPrecision(3) + "</td>";
+    info += "</tr>";
+    return info;
+};

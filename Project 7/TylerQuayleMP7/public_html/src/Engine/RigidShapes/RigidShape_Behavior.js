@@ -11,15 +11,23 @@
 RigidShape.prototype.update = function () {
     var dt = gEngine.GameLoop.getUpdateIntervalInSeconds();
     
-    // Symplectic Euler
-    //    v += (1/m * F) * dt
-    //    x += v * dt
-    var v = this.getVelocity();
-    vec2.scaleAndAdd(v, v, this.mAcceleration, (this.getInvMass() * dt ));
+    //v += a*t
+    var accelScale = [0,0];
+    var acc = this.getAcceleration();
+    vec2.scale(accelScale, acc, dt);
+    vec2.add(this.mVelocity, this.mVelocity, accelScale);
+    //    s += v*t 
+    var velScale = [0,0];
+    vec2.scale(velScale, this.mVelocity, dt);
     
-    var pos = this.getPosition();
-    vec2.scaleAndAdd(pos, pos, v, dt);
+    this.move(velScale);
+
+    this.mAngularVelocity += this.mAngularAcceleration * dt;    
+    this.rotate(this.mAngularVelocity * dt);    
 };
+
+
+
 RigidShape.prototype.getInvMass = function () { return this.mInvMass; };
 RigidShape.prototype.setMass = function (m) {
     if(m > 0) {
@@ -36,3 +44,7 @@ RigidShape.prototype.getFriction = function () { return this.mFriction; };
 RigidShape.prototype.setFriction = function (f) { this.mFriction = f; };
 RigidShape.prototype.getAcceleration = function () { return this.mAcceleration; };
 RigidShape.prototype.setAcceleration = function (g) { this.mAcceleration = g; };
+
+RigidShape.prototype.getInertia = function(){return this.mInertia;};
+RigidShape.prototype.getAngle = function(){return this.mAngle;};
+RigidShape.prototype.getAngularVelocity = function(){return this.mAngularVelocity;};

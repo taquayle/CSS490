@@ -63,3 +63,18 @@ GameObjectSet.prototype.toggleVisibility = function () {
 };
 
 GameObjectSet.prototype.returnControlledObj = function () {return this.getObjectAt(this.kPri);};
+
+GameObjectSet.prototype.displayInfo = function()
+{
+    var html = "<table border='1'>";
+    html += "<tr bgcolor='AAAAAA'><td> # </td><td> Pos </td>  <td> Velocity </td> <td>Ang Vel</td> <td>Inertia</td> <td> Angle </td> </tr>";
+    for(var i = 0; i < this.mSet.length; i++)
+    {
+        if(i === this.kPri)
+            html += this.mSet[i].getInfo(i, "00ff00");
+        else
+            html += this.mSet[i].getInfo(i, "AAAAAA");
+    };
+    html += "</table>";
+    document.getElementById("INFO").innerHTML = html;
+};

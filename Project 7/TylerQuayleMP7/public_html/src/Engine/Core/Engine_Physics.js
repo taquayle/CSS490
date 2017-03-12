@@ -62,23 +62,44 @@ gEngine.Physics = (function () {
         vec2.sub(v, v, tangent);
     };
     var resolveCollision = function (s1, s2, collisionInfo) {
+        
+        if ((s1.mInvMass === 0) && (s2.mInvMass === 0)) {
+            return;
+        }
+
         // Step A: one collision has been found
         mHasOneCollision = true;
-        
         // Step B: correct positions
         _positionalCorrection(s1, s2, collisionInfo);
 
         // collision normal direction is _against_ s2
         // Step C: apply friction
-        var s1V = s1.getVelocity();
-        var s2V = s2.getVelocity();
+
         var n = collisionInfo.getNormal();
-        _applyFriction(n, s1V, s1.getFriction(), s1.getInvMass());
-        _applyFriction(n, s2V, -s2.getFriction(), s2.getInvMass());
+
+
+        var start = [0,0];
+        vec2.scale(start, collisionInfo.mStart, (s2.mInvMass / (s1.mInvMass + s2.mInvMass)));
+        var end = [0,0]; 
+        vec2.scale(end, collisionInfo.mEnd, (s1.mInvMass / (s1.mInvMass + s2.mInvMass)));
+        var p = [0,0];
+        vec2.add(p, start, end);
+        
+        var r1 = [0,0], r2 = [0,0];
+        vec2.sub(r1, p, s1.getPosition());
+        vec2.sub(r2, p, s2.getPosition());
+        var v1 = [0,0], v2 = [0,0];
+        var crossR1 = [-1 * s1.mAngularVelocity * r1[1], s1.mAngularVelocity * r1[0]];
+        var crossR2 = [-1 * s2.mAngularVelocity * r2[1], s2.mAngularVelocity * r2[0]];
+        vec2.add(v1, s1.mVelocity, crossR1);
+        vec2.add(v2, s2.mVelocity, crossR2);
+        _applyFriction(n, v1, s1.getFriction(), s1.getInvMass());
+
+        //document.getElementById("D1").innerHTML = "r1: " + r1 + " r2: " + r2 + " crossR1: " + crossR1 + " crossR2: " + crossR2 + " v1: " + v1 + "v2: " + v2;
 
         // Step D: compute relatively velocity of the colliding objects
         var relativeVelocity = [0, 0];
-        vec2.sub(relativeVelocity, s2V, s1V);
+        vec2.sub(relativeVelocity, v2, v1);
 
         // Step E: examine the component in the normal direction
         // Relative velocity in normal direction
@@ -90,19 +111,76 @@ gEngine.Physics = (function () {
         
         // Step F: compute and apply response impulses for each object
         var newRestituion = Math.min(s1.getRestitution(), s2.getRestitution());
+        var newFriction = Math.min(s1.getFriction(), s2.getFriction());
+        
+        // R cross N
+        var R1crossN = [0,0];
+        vec2.cross(R1crossN, r1, n);
+        var R2crossN = [0,0];
+        vec2.cross(R2crossN, r2, n);
+        //document.getElementById("D2").innerHTML ="relVel: "+ relativeVelocity +" velInNorm: " + rVelocityInNormal + " newR: "+newRestituion + " R1C: " + R1crossN + " R2C: " + R2crossN;
         // Calc impulse scalar
-        var j = -(1 + newRestituion) * rVelocityInNormal;
-        j = j / (s1.getInvMass() + s2.getInvMass());
+        var jN = -(1 + newRestituion) * rVelocityInNormal;
+        
+        jN = jN / (s1.getInvMass() + s2.getInvMass() +
+                R1crossN[2] * R1crossN[2] * s1.mInertia +
+                R2crossN[2] * R2crossN[2] * s2.mInertia);
 
         var impulse = [0, 0];
-        vec2.scale(impulse, collisionInfo.getNormal(), j);
+        vec2.scale(impulse, n, jN);
+        
+        var impScale = [0,0];
+        vec2.scale(impScale, impulse, s1.mInvMass);
+        vec2.sub(s1.mVelocity, s1.mVelocity, impScale);
 
-        var newImpulse = [0, 0];
-        vec2.scale(newImpulse, impulse, s1.getInvMass());
-        vec2.sub(s1V, s1V, newImpulse);
+        vec2.scale(impScale, impulse, s2.mInvMass);
+        vec2.add(s2.mVelocity, s2.mVelocity, impScale);
+        
+        document.getElementById("D4").innerHTML = "s1Vel: " + s1.mVelocity + " s2Vel: " + s2.mVelocity;
+        
 
-        vec2.scale(newImpulse, impulse, s2.getInvMass());
-        vec2.add(s2V, s2V, newImpulse);
+        s1.mAngularVelocity -= R1crossN[2] * jN * s1.mInertia;
+        s2.mAngularVelocity += R2crossN[2] * jN * s2.mInertia;
+        
+        
+        var tangent = [0,0]; 
+        var nScale = [0,0];
+        var relativeDot = vec2.dot(relativeVelocity, n);
+        
+        vec2.scale(nScale, n, relativeDot);
+        vec2.sub(tangent, relativeVelocity, nScale);
+        vec2.normalize(tangent, tangent);
+        vec2.scale(tangent, tangent, -1);
+        
+        var R1CrossT = [0,0], R2CrossT = [0,0];
+        vec2.cross(R1CrossT, r1, tangent);
+        vec2.cross(R2CrossT, r2, tangent);
+        
+        var relativeDotTangent = vec2.dot(relativeVelocity, tangent);
+
+        var jT = -(1 + newRestituion) * relativeDotTangent * newFriction;
+        jT = jT / (s1.mInvMass + s2.mInvMass + R1CrossT[2] * R1CrossT[2] * s1.mInertia + R2CrossT[2] * R2CrossT[2] * s2.mInertia);
+        document.getElementById("D3").innerHTML = jT;
+        //friction should less than force in normal direction
+        if (jT > jN) {
+            jT = jN;
+        }
+        
+        vec2.scale(impulse, tangent, jT);
+        var impScaleMass1 = [0,0], impScaleMass2 = [0,0];
+        
+        vec2.scale(impScaleMass1, impulse, s1.mInvMass);
+        vec2.scale(impScaleMass2, impulse, s2.mInvMass);
+        
+        //document.getElementById("D3").innerHTML = "tan:" + tangent + "imp: "+ impulse + " s1Mass: "+ s1.mInvMass+ " s2Mass: " + s2.mInvMass + " imp1: " + impScaleMass1 + "imp2: " + impScaleMass2;
+        
+        vec2.sub(s1.mVelocity, s1.mVelocity, impScaleMass1);
+        vec2.add(s2.mVelocity, s2.mVelocity, impScaleMass2);
+        //document.getElementById("D3").innerHTML = "inertia1:" + s1.mInertia + "inertia2: "+ s2.mInertia;
+
+        s1.mAngularVelocity -= R1CrossT[2] * jT * s1.mInertia;
+        s2.mAngularVelocity += R2CrossT[2] * jT * s2.mInertia;
+        //document.getElementById("D3").innerHTML = "AngVel1:" + s1.mAngularVelocity + "AngVel2: "+ s2.mAngularVelocity + " s1Mass: "+ s1.mInvMass+ " s2Mass: " + s2.mInvMass + " imp1: " + impScaleMass1 + "imp2: " + impScaleMass2;
     };
     
     var beginRelaxation = function() { 

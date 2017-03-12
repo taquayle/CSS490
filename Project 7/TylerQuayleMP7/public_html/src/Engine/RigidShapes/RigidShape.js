@@ -18,18 +18,21 @@ RigidShape.eRigidType = Object.freeze({
 function RigidShape(xform) {
     this.mXform = xform; // this is typically from gameObject
     this.kPadding = 0.25; // size of the position mark
-    
+    //this.mCenter = xform.getPosition();
     this.mPositionMark = new LineRenderable();
     
     this.mDrawBounds = false;
     
     // physical properties
     this.mInvMass = 1;
+    this.mAngle = 0;
     this.mRestitution = 0.8;
     this.mVelocity = vec2.fromValues(0, 0);
-    this.mFriction = 0.3;
+    this.mInertia = 0;
+    this.mFriction = .2;
     this.mAngularVelocity = 0;
     this.mAcceleration = gEngine.Physics.getSystemtAcceleration();
+    this.mAngularAcceleration = 0;
 }
 
 RigidShape.prototype.rigidType = function () {
@@ -39,11 +42,6 @@ RigidShape.prototype.rigidType = function () {
 
 RigidShape.prototype.travel = function(dt) {};
 
-RigidShape.prototype.update = function () {
-    var dt = gEngine.GameLoop.getUpdateIntervalInSeconds();
-    //s += v*t 
-    this.travel(dt);
-};
 
 RigidShape.prototype.draw = function (aCamera) {
     if (!this.mDrawBounds) {
@@ -78,3 +76,4 @@ RigidShape.prototype.setColor = function (color) {
 RigidShape.prototype.getColor = function () { return this.mPositionMark.getColor(); };
 RigidShape.prototype.setDrawBounds = function(d) { this.mDrawBounds = d; };
 RigidShape.prototype.getDrawBounds = function() { return this.mDrawBounds; };
+
