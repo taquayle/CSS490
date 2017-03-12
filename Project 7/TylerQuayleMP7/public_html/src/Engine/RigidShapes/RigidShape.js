@@ -39,10 +39,6 @@ RigidShape.prototype.rigidType = function () {
     return RigidShape.eRigidType.eRigidAbstract;
 };
 
-
-RigidShape.prototype.travel = function(dt) {};
-
-
 RigidShape.prototype.draw = function (aCamera) {
     if (!this.mDrawBounds) {
         return;

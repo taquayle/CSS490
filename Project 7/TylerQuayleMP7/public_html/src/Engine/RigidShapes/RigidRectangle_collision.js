@@ -10,7 +10,7 @@
 RigidRectangle.prototype.collided = function (otherShape, collisionInfo) {
     var status = false;
     if (otherShape.mType === "RigidCircle") {
-        status = this.collideRectCirc(otherShape, collisionInfo);
+        status = this.collidedRectCirc(otherShape, collisionInfo);
     } else {
         status = this.collideRectRect(this, otherShape, collisionInfo);
     }
@@ -128,3 +128,103 @@ RigidRectangle.prototype.collideRectRect = function (r1, r2, collisionInfo) {
     }
     return status1 && status2;
 };
+
+//RigidRectangle.prototype.collidedRectCirc = function (otherCir, collisionInfo) {
+//
+//    var inside = true;
+//    var bestDistance = -99999;
+//    var nearestEdge = 0;
+//    var i, v = [0,0];
+//    var circ2Pos, projection;
+//    for (i = 0; i < 4; i++) {
+//        //find the nearest face for center of circle        
+//        circ2Pos = otherCir.getPosition();
+//        vec2.sub(v, circ2Pos, this.mVertex[i]);
+//        projection = vec2.dot(v, this.mFaceNormal[i]);
+//        if (projection > 0) {
+//            //if the center of circle is outside of rectangle
+//            bestDistance = projection;
+//            nearestEdge = i;
+//            inside = false;
+//            break;
+//        }
+//        if (projection > bestDistance) {
+//            bestDistance = projection;
+//            nearestEdge = i;
+//        }
+//    }
+//    var dis, normal, radiusVec = [0,0];
+//    if (!inside) {
+//        //the center of circle is outside of rectangle
+//
+//        //v1 is from left vertex of face to center of circle 
+//        //v2 is from left vertex of face to right vertex of face
+//        var v1 = [0,0], v2 = [0,0];
+//        //var v1 = circ2Pos.subtract(this.mVertex[nearestEdge]);
+//        vec2.sub(v1, circ2Pos, this.mVertex[nearestEdge]);
+//        //var v2 = this.mVertex[(nearestEdge + 1) % 4].subtract(this.mVertex[nearestEdge]);
+//        vec2.sub(v2, this.mVertex[(nearestEdge + 1) % 4], this.mVertex[nearestEdge]);
+//        //var dot = v1.dot(v2);
+//        var dot = vec2.dot(v1, v2);
+//        
+//        if (dot < 0) {
+//            //the center of circle is in corner region of mVertex[nearestEdge]
+//            //dis = v1.length();
+//            dis = vec2.length(v1);
+//            //compare the distance with radium to decide collision
+//            if (dis > otherCir.mRadius) {
+//                return false;
+//            }
+//
+//            //normal = v1.normalize();
+//            normal = vec2.normalize(v1, v1);
+//            //radiusVec = normal.scale(-otherCir.mRadius);
+//            vec2.scale(radiusVec, normal, -otherCir.mRadius);
+//            collisionInfo.setInfo(otherCir.mRadius - dis, normal, circ2Pos.add(radiusVec));
+//        } else {
+//            //the center of circle is in corner region of mVertex[nearestEdge+1]
+//
+//            //v1 is from right vertex of face to center of circle 
+//            //v2 is from right vertex of face to left vertex of face
+//            //v1 = circ2Pos.subtract(this.mVertex[(nearestEdge + 1) % 4]);
+//            vec2.subtract(v1, circ2Pos, this.mVertex[(nearestEdge + 1) % 4]);
+//            //v2 = v2.scale(-1);
+//            vec2.scale(v2, v2, -1);
+//            //dot = v1.dot(v2); 
+//            dot = vec2.dot(v1, v2);
+//            if (dot < 0) {
+//                dis = vec2.length(v1);
+//                //compare the distance with radium to decide collision
+//                if (dis > otherCir.mRadius) {
+//                    return false;
+//                }
+//                //normal = v1.normalize();
+//                normal = vec2.normalize(v1, v1);
+//                //radiusVec = normal.scale(-otherCir.mRadius);
+//                vec2.scale(radiusVec, normal, -otherCir.mRadius);
+//                collisionInfo.setInfo(otherCir.mRadius - dis, normal, circ2Pos.add(radiusVec));
+//            } else {
+//                //the center of circle is in face region of face[nearestEdge]
+//                if (bestDistance < otherCir.mRadius) {
+//                    //radiusVec = this.mFaceNormal[nearestEdge].scale(otherCir.mRadius);
+//                    vec2.scale(radiusVec, this.mFaceNormal[nearestEdge], otherCir.mRadius);
+//                    var circ2PosSubRadius = [0,0];
+//                    vec2.sub(circ2PosSubRadius, circ2Pos, radiusVec);
+//                    collisionInfo.setInfo(otherCir.mRadius - bestDistance, this.mFaceNormal[nearestEdge], circ2PosSubRadius);
+//                } else {
+//                    return false;
+//                }
+//            }
+//        }
+//    } else {
+//        //the center of circle is inside of rectangle
+//        //radiusVec = this.mFaceNormal[nearestEdge].scale(otherCir.mRadius);
+//        radiusVec = [0,0];
+//        vec2.scale(radiusVec, this.mFaceNormal[nearestEdge], otherCir.mRadius);
+//        
+//        var circ2PosSubRadius = [0,0];
+//        vec2.sub(circ2PosSubRadius, circ2Pos, radiusVec);
+//        collisionInfo.setInfo(otherCir.mRadius - bestDistance, this.mFaceNormal[nearestEdge],  circ2PosSubRadius);
+//    }
+//    return true;
+//};

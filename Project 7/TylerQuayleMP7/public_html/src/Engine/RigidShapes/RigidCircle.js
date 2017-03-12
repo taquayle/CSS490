@@ -11,8 +11,10 @@
 function RigidCircle(xform, r) {
     RigidShape.call(this, xform);
     this.kNumSides = 16;
+    this.mType = "RigidCircle";
     this.mSides = new LineRenderable();
     this.mRadius = r;
+    this.updateInertia();
 }
 gEngine.Core.inheritPrototype(RigidCircle, RigidShape);
 
@@ -53,4 +55,37 @@ RigidCircle.prototype.draw = function (aCamera) {
 RigidCircle.prototype.setColor = function (color) {
     RigidShape.prototype.setColor.call(this, color);
     this.mSides.setColor(color);
+};
+
+//rotate angle in counterclockwise
+RigidCircle.prototype.rotate = function (angle) {
+    this.mAngle += angle;
+    var mCenter = this.getPosition();
+    this.mXform.setRotationInRad(this.mAngle);
+    var r = this.mXform.getRotationInRad();
+    //this.mStartpoint = this.mStartpoint.rotate(this.mCenter, angle);
+    vec2.rotateWRT(mCenter, mCenter, r, mCenter);
+    return this;
+};
+
+RigidCircle.prototype.move = function (s) {
+    var pos = this.getPosition();
+    vec2.add(pos, pos, s);
+    return this;
+};
+
+RigidCircle.prototype.updateInertia = function () {
+    if (this.mInvMass === 0) {
+        this.mInertia = 0;
+    } else {
+        // this.mInvMass is inverted!!
+        // Inertia=mass * radius^2
+        // 12 is a constant value that can be changed
+        this.mInertia = (1 / this.mInvMass) * (this.mRadius * this.mRadius) / 12;
+    }
+};
+
+RigidCircle.prototype.update = function () {
+
+    RigidShape.prototype.update.call(this);
 };

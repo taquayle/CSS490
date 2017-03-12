@@ -28,7 +28,7 @@ function MyGame() {
     this.mBorder = null;
     this.mTarget = null;
     
-    this.mNumOfObj = 10;
+    this.mNumOfObj = 4;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -70,11 +70,11 @@ MyGame.prototype.initialize = function () {
 
 MyGame.prototype.addObject = function()
 {
-    var pX = this.mCamera.getWCWidth()-20;
-    var pY = this.mCamera.getWCHeight()-20;
-//    if(Math.random() >= .5)
-//        this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
-//    else
+    var pX = this.mCamera.getWCWidth()-40;
+    var pY = this.mCamera.getWCHeight()-40;
+    if(Math.random() >= .5)
+        this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+    else
         this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
 };
 

@@ -97,7 +97,6 @@ RigidRectangle.prototype.update = function () {
 };
 
 RigidRectangle.prototype.rotate = function (angle) {
-    
     this.mAngle += angle;
     var center = this.mXform.getPosition();
     this.mXform.setRotationInRad(this.mAngle);
@@ -105,23 +104,7 @@ RigidRectangle.prototype.rotate = function (angle) {
     for (var i = 0; i<4; i++) {
         vec2.rotateWRT(this.mVertex[i], this.mVertex[i], r, center);
     }
-
-
-    //this.mFaceNormal[0] = this.mVertex[1].subtract(this.mVertex[2]);
-    vec2.subtract(this.mFaceNormal[0], this.mVertex[1], this.mVertex[2]);
-    vec2.normalize(this.mFaceNormal[0], this.mFaceNormal[0]);
-    
-    //this.mFaceNormal[1] = this.mVertex[2].subtract(this.mVertex[3]);
-    vec2.subtract(this.mFaceNormal[1], this.mVertex[2], this.mVertex[3]);
-    vec2.normalize(this.mFaceNormal[1], this.mFaceNormal[1]);
-    
-    //this.mFaceNormal[2] = this.mVertex[3].subtract(this.mVertex[0]);
-    vec2.subtract(this.mFaceNormal[2], this.mVertex[3], this.mVertex[0]);
-    vec2.normalize(this.mFaceNormal[2], this.mFaceNormal[2]);
-    
-    //this.mFaceNormal[3] = this.mVertex[0].subtract(this.mVertex[1]);
-    vec2.subtract(this.mFaceNormal[3], this.mVertex[0], this.mVertex[1]);
-    vec2.normalize(this.mFaceNormal[3], this.mFaceNormal[3]);
+    this.computeFaceNormals();
     return this;
 };
 

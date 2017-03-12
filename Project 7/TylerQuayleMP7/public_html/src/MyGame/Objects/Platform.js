@@ -28,7 +28,7 @@ function Platform(spriteTexture, x, y, rot) {
     r.setDrawBounds(true);
     r.rotate(this.mPlat.getXform().getRotationInRad());
     r.setColor([0, 0, 0, 1]);
-    r.setRestitution(0.1);
+    r.setRestitution(0.99);
     this.setPhysicsComponent(r);
     //this.toggleDrawRenderable();
 }
