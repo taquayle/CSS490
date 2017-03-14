@@ -147,7 +147,7 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
     this.mMsg.update();
 
-    //this.mTarget.update(this.mObjs.returnControlledObj());
+    this.mTarget.update(this.mObjs.returnControlledObj());
     if(this.mImpulse){
         gEngine.Physics.processSetSet(this.mObjs, this.mObjs);}
     
@@ -164,5 +164,5 @@ MyGame.prototype.update = function () {
         this.mImpulse = !this.mImpulse;}
     this.mObjs.displayInfo();
     this.mObjs.update();
-    //this.mBorder.update();
+    this.mBorder.update();
 };

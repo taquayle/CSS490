@@ -67,7 +67,7 @@ GameObjectSet.prototype.returnControlledObj = function () {return this.getObject
 GameObjectSet.prototype.displayInfo = function()
 {
     var html = "<table border='1'>";
-    html += "<tr bgcolor='AAAAAA'><td> # </td><td> Pos </td>  <td> Velocity </td> <td>Ang Vel</td> <td>Inertia</td> <td> Angle </td> </tr>";
+    html += "<tr bgcolor='AAAAAA'><td> # </td><td> Pos </td>  <td> Velocity </td> <td>Ang Vel</td> <td>Inertia</td> <td> Angle </td> <td>invMass</td> </tr>";
     for(var i = 0; i < this.mSet.length; i++)
     {
         if(i === this.kPri)

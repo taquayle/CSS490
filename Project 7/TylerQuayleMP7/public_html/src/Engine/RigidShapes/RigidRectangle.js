@@ -11,7 +11,7 @@
 function RigidRectangle(xform, w, h) {
     RigidShape.call(this, xform);
     this.mSides = new LineRenderable();
-    
+    this.mType = "RigidRectangle"
     this.mWidth = w;
     this.mHeight = h;
     

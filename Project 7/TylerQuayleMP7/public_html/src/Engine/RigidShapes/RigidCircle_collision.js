@@ -39,21 +39,6 @@ RigidCircle.prototype.collidedCircCirc = function(c1, c2, collisionInfo) {
 
 
 RigidCircle.prototype.collided = function(otherShape, collisionInfo) { 
-//    var status = false;
-//    var n;
-//    collisionInfo.setDepth(0);
-//    switch (otherShape.rigidType()) {
-//        case RigidShape.eRigidType.eRigidCircle:
-//            status = this.collidedCircCirc(this, otherShape, collisionInfo);
-//            break;
-//        case RigidShape.eRigidType.eRigidRectangle:
-//            status = this.collidedRectCirc(otherShape, this, collisionInfo);
-//            n = collisionInfo.getNormal();
-//            n[0] = -n[0];
-//            n[1] = -n[1];
-//            break;
-//    }
-//    return status;
     var status = false;
     if (otherShape.mType === "RigidCircle") {
         status = this.collidedCircCirc(this, otherShape, collisionInfo);

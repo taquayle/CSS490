@@ -51,6 +51,7 @@ GeneralObj.prototype.getInfo = function(i, color){
     info += "<td>" + vel.getAngularVelocity().toPrecision(3) + "</td>";
     info += "<td>" + vel.getInertia().toPrecision(3) + "</td>";
     info += "<td>" + vel.getAngle().toPrecision(3) + "</td>";
+    info += "<td>" + vel.getInvMass().toPrecision(3) + "</td>";
     info += "</tr>";
     return info;
 };

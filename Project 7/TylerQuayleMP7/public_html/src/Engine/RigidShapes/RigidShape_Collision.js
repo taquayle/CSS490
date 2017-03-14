@@ -40,7 +40,6 @@ RigidShape.prototype.collidedRectCirc = function (otherCir, collisionInfo) {
     var i = 0;
     while ((!outside) && (i<4)) {
         //find the nearest face for center of circle  
-        document.getElementById("D4").innerHTML = this.mVertex[i];
         circ2Pos = otherCir.getPosition();
         vec2.sub(vToC, circ2Pos, this.mVertex[i]);
         projection = vec2.dot(vToC, this.mFaceNormal[i]);
