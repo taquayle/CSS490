@@ -18,7 +18,11 @@ function MyGame() {
     this.kWall = "assets/wall.png";
     this.kPlat = "assets/platform.png";
     this.kTarg = "assets/target.png";
-    
+    /**************************************************************************/
+    // CAMERA SETTINGS
+    this.kWinSizeWidth = .99;        // % Amount of screen width to take up
+    this.kWinSizeHeight = .95;       // % Amount of screen height to take up
+    this.kWorldScale = 10;           // 1/this scale. Higher number WC = less
     // The camera to view the scene
     this.mCamera = null;
     this.mImpulse = true;
@@ -50,10 +54,13 @@ MyGame.prototype.unloadScene = function () {
 
 MyGame.prototype.initialize = function () {
     // Step A: set up the cameras
+    this.setCanvasSize(this.kWinSizeWidth ,this.kWinSizeHeight);
+    var can =  document.getElementById("GLCanvas");
+    var scale = can.width * (1/this.kWorldScale);
     this.mCamera = new Camera(
         vec2.fromValues(50, 40), // position of the camera
-        100,                     // width of camera
-        [0, 0, 800, 600]         // viewport (orgX, orgY, width, height)
+        scale,                     // width of camera
+        [0, 0, can.width, can.height]         // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
@@ -77,15 +84,15 @@ MyGame.prototype.addObject = function()
     {
         case 0:
             if(Math.random() >= .5)
-                this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+                this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
             else
-                this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+                this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
             break;
         case 1:
-            this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+            this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
             break;
         case 2:
-            this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+            this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
             break;
             
     }
@@ -178,4 +185,10 @@ MyGame.prototype.update = function () {
     this.mObjs.displayInfo();
     this.mObjs.update();
     this.mBorder.update();
+};
+
+MyGame.prototype.setCanvasSize = function(pW, pH)
+{
+    document.getElementById("GLCanvas").width = (window.innerWidth*.65) * pW;
+    document.getElementById("GLCanvas").height = window.innerHeight * pH;
 };

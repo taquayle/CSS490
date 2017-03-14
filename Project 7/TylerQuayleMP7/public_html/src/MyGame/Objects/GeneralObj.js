@@ -49,10 +49,10 @@ GeneralObj.prototype.getInfo = function(i, color){
     info += "<td>" + i + "</td>";
     info += "<td>" + Math.round(this.getPos()[0]) + ", "+ Math.round(this.getPos()[1]) + "</td>";
     info += "<td>" + Math.round(vel.getVelocity()[0]) + ", "+ Math.round(vel.getVelocity()[1]) + "</td>";
-    info += "<td>" + vel.getAngularVelocity().toPrecision(3) + "</td>";
-    info += "<td>" + vel.getInertia().toPrecision(3) + "</td>";
-    info += "<td>" + vel.getAngle().toPrecision(3) + "</td>";
-    info += "<td>" + vel.getInvMass().toPrecision(3) + "</td>";
+    info += "<td>" + vel.getAngularVelocity().toFixed(3) + "</td>";
+    info += "<td>" + vel.getInertia().toFixed(3) + "</td>";
+    info += "<td>" + vel.getAngle().toFixed(3) + "</td>";
+    info += "<td>" + vel.getInvMass().toFixed(3)+ "</td>";
     info += "</tr>";
     return info;
 };

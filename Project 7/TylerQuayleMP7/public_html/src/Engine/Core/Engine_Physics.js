@@ -43,19 +43,6 @@ gEngine.Physics = (function () {
         s2.move(t2);
         /**********************************************************************/
         // 9.2 Impulse Rep
-//        var s1InvMass = s1.getInvMass();
-//        var s2InvMass = s2.getInvMass();
-//        var num = collisionInfo.getDepth() / (s1InvMass + s2InvMass) * mPosCorrectionRate;
-//        var correctionAmount = [0, 0];
-//        vec2.scale(correctionAmount, collisionInfo.getNormal(), num);
-//
-//        var ca = [0, 0];
-//        vec2.scale(ca, correctionAmount, s1InvMass);
-//        var s1Pos = s1.getPosition();
-//        vec2.subtract(s1Pos, s1Pos, ca);
-//
-//        vec2.scale(ca, correctionAmount, s2InvMass);
-//        var s2Pos = s2.getPosition();
 //        vec2.add(s2Pos, s2Pos, ca);
     };
     

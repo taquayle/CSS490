@@ -66,7 +66,11 @@ GameObjectSet.prototype.returnControlledObj = function () {return this.getObject
 
 GameObjectSet.prototype.displayInfo = function()
 {
-    var html = "<table border='1'>";
+    var w = window.innerWidth *.33;
+    var cW = [w*.01, w*.2, w*.2, w*.2, w*.2, w*2, w*2];
+    var html = "<table bgcolor='#BBBBBB' width = '"+ w +"'style='float: right' border='1'>";
+    //html += " <col width='"+ cW[0] +"'><col width='"+ cW[1] +"'><col width='"+ cW[2] +
+     //       "'><col width='"+ cW[3] +"'>"+"<col width='"+ cW[4] +"'>"+"<col width='"+ cW[5] +"'>"+"<col width='"+ cW[6] +"'>";
     html += "<tr bgcolor='AAAAAA'><td> # </td><td> Pos </td>  <td> Velocity </td> <td>Ang Vel</td> <td>Inertia</td> <td> Angle </td> <td>invMass</td> </tr>";
     for(var i = 0; i < this.mSet.length; i++)
     {
