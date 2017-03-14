@@ -14,7 +14,7 @@ var gEngine = gEngine || { };
 gEngine.Physics = (function () {
     var mRelaxationCount = 15;                  // number of relaxation iteration
     var mRelaxationOffset = 1/mRelaxationCount; // porportion to apply when scaling friction
-    var mPosCorrectionRate = 1.8;               // percentage of separation to project objects
+    var mPosCorrectionRate = .2;               // percentage of separation to project objects
     var mSystemtAcceleration = [0, -20];        // system-wide default acceleration
     
     var mRelaxationLoopCount = 0;               // the current relaxation count
@@ -29,34 +29,34 @@ gEngine.Physics = (function () {
     var _positionalCorrection = function (s1, s2, collisionInfo) {
         /**********************************************************************/
         // 4.4 Physics Rep
-//        var s1InvMass = s1.mInvMass;
-//        var s2InvMass = s2.mInvMass;
-//
-//        var num = collisionInfo.getDepth() / (s1InvMass + s2InvMass) * mPosCorrectionRate;
-//        var correctionAmount = [0,0];
-//        vec2.scale(correctionAmount, collisionInfo.getNormal(), num);
-//
-//        var t1 = [0,0], t2 = [0,0];
-//        vec2.scale(t1, correctionAmount, -s1InvMass);
-//        vec2.scale(t2, correctionAmount, s2InvMass);
-//        s1.move(t1);
-//        s2.move(t2);
-        /**********************************************************************/
-        // 9.2 Impulse Rep
-        var s1InvMass = s1.getInvMass();
-        var s2InvMass = s2.getInvMass();
+        var s1InvMass = s1.mInvMass;
+        var s2InvMass = s2.mInvMass;
+
         var num = collisionInfo.getDepth() / (s1InvMass + s2InvMass) * mPosCorrectionRate;
-        var correctionAmount = [0, 0];
+        var correctionAmount = [0,0];
         vec2.scale(correctionAmount, collisionInfo.getNormal(), num);
 
-        var ca = [0, 0];
-        vec2.scale(ca, correctionAmount, s1InvMass);
-        var s1Pos = s1.getPosition();
-        vec2.subtract(s1Pos, s1Pos, ca);
-
-        vec2.scale(ca, correctionAmount, s2InvMass);
-        var s2Pos = s2.getPosition();
-        vec2.add(s2Pos, s2Pos, ca);
+        var t1 = [0,0], t2 = [0,0];
+        vec2.scale(t1, correctionAmount, -s1InvMass);
+        vec2.scale(t2, correctionAmount, s2InvMass);
+        s1.move(t1);
+        s2.move(t2);
+        /**********************************************************************/
+        // 9.2 Impulse Rep
+//        var s1InvMass = s1.getInvMass();
+//        var s2InvMass = s2.getInvMass();
+//        var num = collisionInfo.getDepth() / (s1InvMass + s2InvMass) * mPosCorrectionRate;
+//        var correctionAmount = [0, 0];
+//        vec2.scale(correctionAmount, collisionInfo.getNormal(), num);
+//
+//        var ca = [0, 0];
+//        vec2.scale(ca, correctionAmount, s1InvMass);
+//        var s1Pos = s1.getPosition();
+//        vec2.subtract(s1Pos, s1Pos, ca);
+//
+//        vec2.scale(ca, correctionAmount, s2InvMass);
+//        var s2Pos = s2.getPosition();
+//        vec2.add(s2Pos, s2Pos, ca);
     };
     
     // n is the collision normal
@@ -157,8 +157,8 @@ gEngine.Physics = (function () {
         //s1.mAngularVelocity -= R1crossN[2] * jN * s1.mInertia;
         s2.mAngularVelocity += R2crossN[2] * jN * s2.mInertia;
         
-        _applyFriction(n, v1, newFriction, s1.getInvMass());
-        _applyFriction(n, v2, -newFriction, s2.getInvMass());
+        //_applyFriction(n, v1, newFriction, s1.getInvMass());
+        //_applyFriction(n, v2, -newFriction, s2.getInvMass());
         
         var tangent = [0,0]; 
         var nScale = [0,0];

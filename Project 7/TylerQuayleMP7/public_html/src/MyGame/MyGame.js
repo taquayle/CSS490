@@ -28,6 +28,7 @@ function MyGame() {
     this.mBorder = null;
     this.mTarget = null;
     
+    this.circAndRec = 0; // 0 = both, 1 = only circles, 2 = only rectangles
     this.mNumOfObj = 4;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -72,10 +73,22 @@ MyGame.prototype.addObject = function()
 {
     var pX = this.mCamera.getWCWidth()-40;
     var pY = this.mCamera.getWCHeight()-40;
-    if(Math.random() >= .5)
-        this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
-    else
-        this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+    switch(this.circAndRec)
+    {
+        case 0:
+            if(Math.random() >= .5)
+                this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+            else
+                this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+            break;
+        case 1:
+            this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+            break;
+        case 2:
+            this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX+20, Math.random()*pY+20));
+            break;
+            
+    }
 };
 
 MyGame.prototype.buildBorder = function()

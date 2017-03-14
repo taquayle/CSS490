@@ -41,6 +41,7 @@ GeneralObj.prototype.getWidth = function(){ return this.getXform().getSize()[0];
 GeneralObj.prototype.getHeight = function(){ return this.getXform().getSize()[1];};
 
 GeneralObj.prototype.getPos = function(){ return this.getXform().getPosition();};
+GeneralObj.prototype.getRot = function(){ return this.getXform().getRotationInRad();};
 
 GeneralObj.prototype.getInfo = function(i, color){
     var vel = this.getPhysicsComponent(); 

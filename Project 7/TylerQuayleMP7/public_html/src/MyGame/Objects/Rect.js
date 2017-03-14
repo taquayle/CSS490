@@ -33,8 +33,8 @@ function Rect(spriteTexture, atX, atY) {
 
     GameObject.call(this, this.mRect);
     var r = new RigidRectangle(this.getXform(), this.kWidth, this.kHeight);
-    r.setMass(.01);  // less dense than Minions
-    r.setRestitution(0.2);
+    r.setMass(.5);  // less dense than Minions
+    r.setRestitution(0.1);
     r.setColor([0, 1, 0, 1]);
     r.setDrawBounds(true);
     this.setPhysicsComponent(r);

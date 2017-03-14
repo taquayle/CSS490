@@ -33,6 +33,8 @@ Target.prototype.update = function (mControl) {
     this.kMimicPos = mControl.getPos();
     this.kMimicHei = mControl.getHeight();
     this.kMimicWid = mControl.getWidth();
+    this.kMimicRot = mControl.getRot();
     this.mPlat.getXform().setPosition(this.kMimicPos[0], this.kMimicPos[1]);
     this.mPlat.getXform().setSize(this.kMimicWid, this.kMimicHei);
+    this.mPlat.getXform().setRotationInRad(this.kMimicRot);
 };
