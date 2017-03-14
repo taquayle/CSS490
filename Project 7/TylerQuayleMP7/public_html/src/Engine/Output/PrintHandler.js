@@ -28,8 +28,9 @@ PrintHandler.prototype.update = function()
     {   
         this.mUpdate = false;
         this.kPrintLines = [];
+        this.kPrintLines.push(new PrintLine(this.mCam ,"", 1 ,this.kSize));
         this.kMsgSplit = this.kMsg.split("\n");
-        var l = this.kMsgSplit.length;
+        var l = this.kMsgSplit.length+1;
         for(var i = 0; i < this.kMsgSplit.length; i++){
             this.kPrintLines.push(new PrintLine(this.mCam ,this.kMsgSplit[i], (l-i) ,this.kSize));
         }

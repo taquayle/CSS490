@@ -43,6 +43,11 @@ GeneralObj.prototype.getHeight = function(){ return this.getXform().getSize()[1]
 GeneralObj.prototype.getPos = function(){ return this.getXform().getPosition();};
 GeneralObj.prototype.getRot = function(){ return this.getXform().getRotationInRad();};
 
+GeneralObj.prototype.jumpAround = function(){
+    var v = this.getPhysicsComponent().getVelocity();
+    v[0] += (Math.random() * 40) -20;
+    v[1] += (Math.random() * 40) -20;
+};
 GeneralObj.prototype.getInfo = function(i, color){
     var vel = this.getPhysicsComponent(); 
     var info = "<tr bgcolor='#" + color + "'>";
@@ -52,7 +57,7 @@ GeneralObj.prototype.getInfo = function(i, color){
     info += "<td>" + vel.getAngularVelocity().toFixed(3) + "</td>";
     info += "<td>" + vel.getInertia().toFixed(3) + "</td>";
     info += "<td>" + vel.getAngle().toFixed(3) + "</td>";
-    info += "<td>" + vel.getInvMass().toFixed(3)+ "</td>";
+    info += "<td>" + (1/vel.getMass()).toPrecision(3)  + "</td>";
     info += "</tr>";
     return info;
 };

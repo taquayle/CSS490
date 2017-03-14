@@ -64,6 +64,32 @@ GameObjectSet.prototype.toggleVisibility = function () {
 
 GameObjectSet.prototype.returnControlledObj = function () {return this.getObjectAt(this.kPri);};
 
+GameObjectSet.prototype.changeMass = function (m) { 
+    var t = this.mSet[this.kPri].getPhysicsComponent();
+    t.updateMass(m);};
+
+GameObjectSet.prototype.changeAllMass = function (m) { 
+    var t;
+        for (var i = 0; i < this.mSet.length; i++) {
+            t = this.mSet[i].getPhysicsComponent();
+           t.updateMass(m);}
+ };
+ 
+ GameObjectSet.prototype.changeFriction = function (m) { 
+    var t = this.mSet[this.kPri].getPhysicsComponent();
+    m += t.getFriction();
+    t.setFriction(m);};
+
+ GameObjectSet.prototype.changeRestitution = function (m) { 
+    var t = this.mSet[this.kPri].getPhysicsComponent();
+    m += t.getRestitution();
+    t.setRestitution(m);};
+ 
+GameObjectSet.prototype.jumpAround = function () { 
+    for (var i = 0; i < this.mSet.length; i++) {
+        this.mSet[i].jumpAround();}
+    };
+
 GameObjectSet.prototype.displayInfo = function()
 {
     var w = window.innerWidth *.33;
@@ -81,4 +107,13 @@ GameObjectSet.prototype.displayInfo = function()
     };
     html += "</table>";
     document.getElementById("INFO").innerHTML = html;
+};
+
+GameObjectSet.prototype.getInfo = function()
+{
+    var t = this.mSet[this.kPri].getPhysicsComponent();
+    var msg = "M=";
+    msg += (1/t.getMass()).toPrecision(3) + "(I=" + t.getInertia().toPrecision(3) + ")";
+    msg += " F=" + t.getFriction().toPrecision(3) + " R:" + t.getRestitution().toPrecision(3);
+    return msg;
 };

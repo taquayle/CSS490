@@ -144,9 +144,6 @@ gEngine.Physics = (function () {
         //s1.mAngularVelocity -= R1crossN[2] * jN * s1.mInertia;
         s2.mAngularVelocity += R2crossN[2] * jN * s2.mInertia;
         
-        //_applyFriction(n, v1, newFriction, s1.getInvMass());
-        //_applyFriction(n, v2, -newFriction, s2.getInvMass());
-        
         var tangent = [0,0]; 
         var nScale = [0,0];
         var relativeDot = vec2.dot(relativeVelocity, n);
@@ -239,12 +236,12 @@ gEngine.Physics = (function () {
                 for (j=0; j<set2.size(); j++) {
                     s2 = set2.getObjectAt(j).getPhysicsComponent();
                     if ((s1 !== s2) && (s1.collided(s2, mCollisionInfo))) {
-//                        var dist =  [0,0];
-//                        vec2.sub(dist, s2.getPosition(), s1.getPosition());
-//                        var normalDot = vec2.dot(mCollisionInfo.getNormal(),dist );
-//                        if (normalDot < 0) {
-//                                mCollisionInfo.changeDir();
-//                            }
+                        var dist =  [0,0];
+                        vec2.sub(dist, s2.getPosition(), s1.getPosition());
+                        var normalDot = vec2.dot(mCollisionInfo.getNormal(),dist );
+                        if (normalDot < 0) {
+                                mCollisionInfo.changeDir();
+                            }
                         resolveCollision(s1, s2, mCollisionInfo);
                     }
                 }

@@ -11,10 +11,11 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Platform(spriteTexture, x, y, rot) {
+function Platform(spriteTexture, x, y, rot, mass) {
     this.kDelta = 0.3;
     if(rot === "undefined")
         rot = 0;
+
     this.mPlat = new SpriteRenderable(spriteTexture);
     this.mPlat.setColor([1, 1, 1, 0]);
     this.mPlat.getXform().setPosition(x, y);
@@ -24,7 +25,11 @@ function Platform(spriteTexture, x, y, rot) {
     GameObject.call(this, this.mPlat);
     
     var r = new RigidRectangle(this.getXform(), 30, 3.75);
-    r.setMass(0);  // ensures no movements!
+    if(mass === "undefined")
+        mass = 0;
+    else
+        r.setAcceleration(0.1);
+    r.setMass(mass);  // ensures no movements!
     r.setDrawBounds(true);
     r.rotate(this.mPlat.getXform().getRotationInRad());
     r.setColor([0, 0, 0, 1]);

@@ -17,6 +17,7 @@ function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kWall = "assets/wall.png";
     this.kPlat = "assets/platform.png";
+    this.kPlatInv = "assets/platform_inv.png";
     this.kTarg = "assets/target.png";
     /**************************************************************************/
     // CAMERA SETTINGS
@@ -26,14 +27,17 @@ function MyGame() {
     // The camera to view the scene
     this.mCamera = null;
     this.mImpulse = true;
+    this.mMovement = true;
     this.mMsg = null;
 
     this.mObjs = null;
     this.mBorder = null;
+    this.mBalance = null;
     this.mTarget = null;
     
     this.circAndRec = 0; // 0 = both, 1 = only circles, 2 = only rectangles
-    this.mNumOfObj = 4;
+    this.mDefaultObj = 10;
+    this.mNumOfObj = 10;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -42,6 +46,7 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kWall);
     gEngine.Textures.loadTexture(this.kPlat);
+    gEngine.Textures.loadTexture(this.kPlatInv);
     gEngine.Textures.loadTexture(this.kTarg);
 };
 
@@ -49,6 +54,7 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kWall);
     gEngine.Textures.unloadTexture(this.kPlat);
+    gEngine.Textures.unloadTexture(this.kPlatInv);
     gEngine.Textures.unloadTexture(this.kTarg);
 };
 
@@ -56,6 +62,10 @@ MyGame.prototype.initialize = function () {
     // Step A: set up the cameras
     this.setCanvasSize(this.kWinSizeWidth ,this.kWinSizeHeight);
     var can =  document.getElementById("GLCanvas");
+    if(this.kWorldScale > 10)
+        this.kWorldScale = 10;
+    if(this.kWorldScale <= 2)
+        this.kWorldScale = 2;
     var scale = can.width * (1/this.kWorldScale);
     this.mCamera = new Camera(
         vec2.fromValues(50, 40), // position of the camera
@@ -68,36 +78,56 @@ MyGame.prototype.initialize = function () {
     this.mMsg = new PrintHandler(this.mCamera, msg);
     this.mBorder = new GameObjectSet();
     this.buildBorder();
-    this.mBorder.addToSet(new Platform(this.kPlat, 50, 40, 30));
+    this.mBorder.addToSet(new Platform(this.kPlat, 30, 40, -30));
+    this.mBorder.addToSet(new Platform(this.kPlat, 60, 30, 0));
+    this.mBorder.addToSet(new Platform(this.kPlat, 20, 20, 0));
+    this.mBorder.addToSet(new Platform(this.kPlat, 70, 50,0));
     this.mObjs = new GameObjectSet();
     for(var i = 0; i < this.mNumOfObj; i++)
         this.addObject();
     this.mObjs.toggleControl(0);
     this.mTarget = new Target(this.kTarg, 0, 0);
+    
+    this.mBalance = new GameObjectSet();
+    this.mBalance.addToSet(new Platform(this.kPlatInv, 20, 65, 0));
+    this.mBalance.addToSet(new Platform(this.kPlatInv, 90, 20, 0));
+};
+
+MyGame.prototype.addObjectByKey= function(type)
+{
+    this.mNumOfObj += 1;
+    var pY = this.mCamera.getWCCenter()[1] + (this.mCamera.getWCHeight()/2) -10;
+    var pX = ((this.mCamera.getWCWidth()-20)/2) + 20;
+    if(type==="Rectangle")
+        this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX, pY));
+    else if(type==="Circle")
+        this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, pY));
+    else
+        this.mNumOfObj -= 1;
 };
 
 MyGame.prototype.addObject = function()
 {
-    var pX = this.mCamera.getWCWidth()-40;
-    var pY = this.mCamera.getWCHeight()-40;
     switch(this.circAndRec)
     {
         case 0:
             if(Math.random() >= .5)
-                this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
+                this.addObjectByKey("Circle");
             else
-                this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
+                this.addObjectByKey("Rectangle");
             break;
         case 1:
-            this.mObjs.addToSet(new Circ(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
+            this.addObjectByKey("Circle");
             break;
         case 2:
-            this.mObjs.addToSet(new Rect(this.kMinionSprite, Math.random()*pX, Math.random()*pY));
-            break;
-            
+            this.addObjectByKey("Rectangle");
+            break;    
     }
+    this.mNumOfObj -= 1;
 };
 
+
+    
 MyGame.prototype.buildBorder = function()
 {
     var cW = this.mCamera.getWCWidth();
@@ -158,10 +188,12 @@ MyGame.prototype.draw = function () {
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
     this.mCamera.setupViewProjection();
-    //this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+
     this.mBorder.draw(this.mCamera);
     this.mObjs.draw(this.mCamera);
     this.mTarget.draw(this.mCamera);
+    this.mBalance.draw(this.mCamera);
+    this.mMsg.draw(this.mCamera);   // only draw status in the main camera
 };
 
 MyGame.prototype.update = function () {
@@ -173,18 +205,67 @@ MyGame.prototype.update = function () {
     
     //gEngine.Physics.processSetSet(this.mObjs, this.mBorder);
     gEngine.Physics.processSetSet(this.mBorder, this.mObjs);
+    gEngine.Physics.processSetSet(this.mObjs, this.mBalance);
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mObjs.toggleVisibility();
-        this.mBorder.toggleVisibility();}
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) {
-        this.mObjs.toggleControl(1);}
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) {
+        this.mBorder.toggleVisibility();
+        this.mBalance.toggleVisibility();}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Right)) { // TOGGLE CONTROL RIGHT (UP)
+        this.mObjs.toggleControl(1);} 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Left)) { // TOGGLE CONTROL LEFT (DOWN)
         this.mObjs.toggleControl(-1);}
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) { // STOP OBJ COLLIDE
         this.mImpulse = !this.mImpulse;}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.V)) { // STOP MOVEMENT
+        this.mMovement= !this.mMovement;}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.K)) { //INC WORLD SCALE (SMALLER)
+        this.kWorldScale += 1; this.initialize();}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.L)) { //DEC WORLD SCALE (LARGER)
+        this.kWorldScale -= 1; this.initialize();}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R)) { //RESET WORLD
+        this.mNumOfObj = this.mDefaultObj; this.initialize();}
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.F)) { //ADD CIRC
+        this.addObjectByKey("Circle");}
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) { //ADD RECT
+        this.addObjectByKey("Rectangle");}
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.M)) {   // MASS
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
+            this.mObjs.changeMass(1);
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
+            this.mObjs.changeMass(-1);}
+        
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.R)) { // RESET
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
+            this.mObjs.changeRestitution(.25);
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
+            this.mObjs.changeRestitution(-.25);}
+        
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.F)) { // FRICTION
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
+            this.mObjs.changeFriction(.1);
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
+            this.mObjs.changeFriction(-.1);}
+    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.H)) { // Jump Around
+        this.mObjs.jumpAround();
+    }
     this.mObjs.displayInfo();
-    this.mObjs.update();
-    this.mBorder.update();
+    if(this.mMovement){ // mMove = false.. no updates = no movements;
+        this.mObjs.update();
+        this.mBorder.update();
+        this.mBalance.update();
+    }
+    var msg = "";
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Shift))
+        msg += "[R] Reset World To default Objects + Resize canvas\n[K] Make World Smaller (Inc Scale)\n[L] Make World Larger\n[F] Add Circle\n[B] Toggle Texture\n" +
+            "[G] Add Rectangle\n[H] Make Objects 'Jump'\n[V] Stop Obj Movement\n[P] No Obj-Obj Collision\n"+
+            "[M] + [UP] Increase Mass [M] + [DOWN] Decrease Mass\n[F] + [UP] Increase Friction [F] + [DOWN] Decrease Friction\n"+
+            "[R] + [UP] Increase Restitution [R] + [DOWN] Decrease Restitution\n";
+    msg += "P("+this.mImpulse + ") V(" + this.mMovement + ") [SHIFT]=SHOW INSTRUCTIONS\n";
+    msg += this.mObjs.getInfo();
+    msg += "   FPS: " + gEngine.GameLoop.getCurrentFPS();
+    this.mMsg.setText(msg);
 };
 
 MyGame.prototype.setCanvasSize = function(pW, pH)

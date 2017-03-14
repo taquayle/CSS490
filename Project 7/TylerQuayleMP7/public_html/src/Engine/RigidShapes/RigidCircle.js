@@ -38,8 +38,8 @@ RigidCircle.prototype.draw = function (aCamera) {
     var theta = deltaTheta;
     prevPoint[0] += this.mRadius;
     var i, x, y;
-    x = pos[0] + this.mRadius * Math.cos(theta);
-    y = pos[1] +  this.mRadius * Math.sin(theta);
+    x = pos[0] + this.mRadius * Math.cos(this.mAngle + 1.57);
+    y = pos[1] +  this.mRadius * Math.sin(this.mAngle + 1.57);
     this.mSides.setFirstVertex(pos[0], pos[1]);
     this.mSides.setSecondVertex(x, y);
     this.mSides.draw(aCamera);

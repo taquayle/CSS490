@@ -14,6 +14,7 @@ gEngine.GameLoop = (function () {
     var kFPS = 60;          // Frames per second
     var kResetTime = kFPS/2;
     var kUpdateFPSTimer = kResetTime;
+    var kCurrentFPS = 0;
     var kFrameTime = 1 / kFPS;
     var kMPF = 1000 * kFrameTime; // Milliseconds per frame.
 
@@ -51,7 +52,7 @@ gEngine.GameLoop = (function () {
             kUpdateFPSTimer -= 1;
             if(kUpdateFPSTimer <= 0)
             {
-                document.getElementById("FPS").innerHTML = Math.round(1000/mElapsedTime);
+                kCurrentFPS = Math.round(1000/mElapsedTime);
                 kUpdateFPSTimer = kResetTime;
             }
             // Step D: now let's draw
@@ -93,10 +94,12 @@ gEngine.GameLoop = (function () {
         return kFrameTime;
     };
     
+    var getCurrentFPS = function() {return kCurrentFPS;};
     var mPublic = {
         start: start,
         stop: stop,
-        getUpdateIntervalInSeconds: getUpdateIntervalInSeconds
+        getUpdateIntervalInSeconds: getUpdateIntervalInSeconds,
+        getCurrentFPS: getCurrentFPS
     };
     return mPublic;
 }());

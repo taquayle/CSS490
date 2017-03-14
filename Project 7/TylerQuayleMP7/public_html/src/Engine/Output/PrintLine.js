@@ -25,7 +25,7 @@ function PrintLine(cam, msg, lNum, size)
     /**************************************************************************/
     var texDim = [cam.getWCWidth(), cam.getWCHeight()];
     var texCen = cam.getWCCenter();
-    var tX = texCen[0] - (texDim[0] /2) + size;
+    var tX = texCen[0] - (texDim[0] /2) + (2*size);
     var tY = texCen[1] - (texDim[1] /2) + (size * lNum);
     
 

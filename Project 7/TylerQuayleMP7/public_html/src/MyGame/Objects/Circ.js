@@ -34,7 +34,7 @@ function Circ(spriteTexture, atX, atY) {
     GameObject.call(this, this.mCirc);
     var r = new RigidCircle(this.getXform(), 
                             (0.5 * Math.sqrt(this.kWidth * this.kWidth + this.kHeight * this.kHeight)));
-    r.setMass(.4);  // less dense than Minions
+    r.setMass(2);  // less dense than Minions
     r.setRestitution(0.3);
     r.setColor([0, 1, 0, 1]);
     r.setDrawBounds(true);

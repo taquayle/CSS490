@@ -29,6 +29,7 @@ RigidShape.prototype.update = function () {
 
 
 RigidShape.prototype.getInvMass = function () { return this.mInvMass; };
+RigidShape.prototype.getMass = function() {return this.getInvMass();};
 RigidShape.prototype.setMass = function (m) {
     if(m > 0) {
         this.mInvMass = 1/m;
@@ -37,6 +38,7 @@ RigidShape.prototype.setMass = function (m) {
         this.mInvMass = 0;
         this.mAcceleration = [0,0];
     }
+    //this.updateInertia();
 };
 RigidShape.prototype.getVelocity = function () { return this.mVelocity; };
 RigidShape.prototype.setVelocity = function (v) { this.mVelocity = v; };
@@ -50,3 +52,5 @@ RigidShape.prototype.setAcceleration = function (g) { this.mAcceleration = g; };
 RigidShape.prototype.getInertia = function(){return this.mInertia;};
 RigidShape.prototype.getAngle = function(){return this.mAngle;};
 RigidShape.prototype.getAngularVelocity = function(){return this.mAngularVelocity;};
+RigidShape.prototype.setAngularVelocity = function(a){this.mAngularVelocity = a;};
+RigidShape.prototype.updateAngularVelocity = function(a){this.mAngularVelocity += a;};
